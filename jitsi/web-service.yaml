@@ -4,7 +4,6 @@ metadata:
   labels:
     service: web
   name: web
-  namespace: jitsi
 spec:
   ports:
   - name: "https"

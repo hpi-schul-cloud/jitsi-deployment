@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: jvb
-  name: jvb
+    k8s-app: jvb2
+  name: jvb2
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      k8s-app: jvb
+      k8s-app: jvb2
   template:
     metadata:
       labels:
-        k8s-app: jvb
+        k8s-app: jvb2
     spec:
       containers:
         - name: jvb
@@ -42,7 +42,7 @@ spec:
             - name: JVB_AUTH_USER
               value: jvb
             - name: JVB_PORT
-              value: "30300"
+              value: "30301"
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:

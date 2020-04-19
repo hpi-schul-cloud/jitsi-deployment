@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     service: jvb
-  name: jvb-udp
+  name: jvb2-udp
 spec:
   type: NodePort
   externalTrafficPolicy: Cluster
@@ -11,6 +11,6 @@ spec:
   - port: 30300
     protocol: UDP
     targetPort: 30300
-    nodePort: 30300
+    nodePort: 30301
   selector:
-    k8s-app: jvb
+    k8s-app: jvb2
