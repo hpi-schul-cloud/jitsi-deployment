@@ -42,7 +42,7 @@ spec:
             - name: JVB_AUTH_USER
               value: jvb
             - name: JVB_PORT
-              value: "30301"
+              value: "30300"
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
