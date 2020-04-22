@@ -1,9 +1,12 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: jitsi
   labels:
     k8s-app: jvb
   name: jvb
+  annotations:
+    service-per-pod-label: "statefulset.kubernetes.io/pod-name"
 spec:
   replicas: 2
   selector:

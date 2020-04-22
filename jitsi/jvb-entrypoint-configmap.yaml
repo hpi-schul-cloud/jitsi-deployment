@@ -1,6 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
+  namespace: jitsi
   name: jvb-entrypoint
 data:
   entrypoint.sh: |

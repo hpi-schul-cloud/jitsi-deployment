@@ -6,11 +6,11 @@ resources:
 - jitsi-secret.yaml
 - jitsi-deployment.yaml
 - jvb-entrypoint-configmap.yaml
+- service-per-pod-configmap.yaml
+- service-per-pod.yaml
 - jvb-statefulset.yaml
 - prosody-service.yaml
 - web-service.yaml
-
-namespace: jitsi
 
 commonLabels:
   env: test

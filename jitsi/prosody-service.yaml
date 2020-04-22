@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: jitsi
   labels:
     service: prosody
   name: prosody
