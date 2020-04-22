@@ -10,7 +10,6 @@ spec:
     annotationSelector:
       matchExpressions:
       - {key: service-per-pod-label, operator: Exists}
-      - {key: service-per-pod-ports, operator: Exists}
   attachments:
   - apiVersion: v1
     resource: services

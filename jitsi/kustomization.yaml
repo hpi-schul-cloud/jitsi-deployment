@@ -6,6 +6,9 @@ resources:
 - jitsi-secret.yaml
 - jitsi-deployment.yaml
 - jvb-entrypoint-configmap.yaml
+- metacontroller-namespace.yaml
+- metacontroller-rbac.yaml
+- metacontroller.yaml
 - service-per-pod-configmap.yaml
 - service-per-pod.yaml
 - jvb-statefulset.yaml
