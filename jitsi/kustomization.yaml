@@ -5,10 +5,8 @@ resources:
 - jitsi-namespace.yaml
 - jitsi-secret.yaml
 - jitsi-deployment.yaml
-- jvb-deployment.yaml
-- jvb2-deployment.yaml
-- jvb-service.yaml
-- jvb2-service.yaml
+- jvb-entrypoint-configmap.yaml
+- jvb-statefulset.yaml
 - prosody-service.yaml
 - web-service.yaml
 

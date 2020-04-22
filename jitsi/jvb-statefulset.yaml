@@ -5,9 +5,7 @@ metadata:
     k8s-app: jvb
   name: jvb
 spec:
-  replicas: 1
-  #strategy:
-  #  type: Recreate
+  replicas: 2
   selector:
     matchLabels:
       k8s-app: jvb
@@ -17,12 +15,23 @@ spec:
       labels:
         k8s-app: jvb
     spec:
+      volumes:
+        - name: jvb-entrypoint
+          configMap:
+            name: jvb-entrypoint
+            defaultMode: 0744
       containers:
         - name: jvb
           image: jitsi/jvb
           imagePullPolicy: Always
-          command: ["/bin/sh"]
-          args: [-c, "/init"]
+          command:
+            - /scripts/entrypoint.sh
+          args:
+            - "30300"
+            - "/init"
+          volumeMounts:
+            - name: jvb-entrypoint
+              mountPath: /scripts
           env:
             - name: NODE_NAME
               valueFrom:
@@ -50,8 +59,6 @@ spec:
               value: "true"
             - name: JVB_AUTH_USER
               value: jvb
-            #- name: JVB_PORT
-            #  value: 30300
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -68,7 +75,7 @@ spec:
               value: Europe/Berlin
   volumeClaimTemplates:
     - metadata:
-        name: volumeclaimjvb
+        name: jvb
       spec: 
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: ionos-enterprise-hdd
