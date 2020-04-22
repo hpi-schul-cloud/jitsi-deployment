@@ -1,16 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     k8s-app: jvb
   name: jvb
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
+  #strategy:
+  #  type: Recreate
   selector:
     matchLabels:
       k8s-app: jvb
+  serviceName: jvb
   template:
     metadata:
       labels:
@@ -20,7 +21,15 @@ spec:
         - name: jvb
           image: jitsi/jvb
           imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args: [-c, "/init"]
           env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: JVB_PORT
+              value: $((30300 + ${NODE_NAME##*-}))
             - name: XMPP_SERVER
               value: prosody
             - name: DOCKER_HOST_ADDRESS
@@ -41,8 +50,8 @@ spec:
               value: "true"
             - name: JVB_AUTH_USER
               value: jvb
-            - name: JVB_PORT
-              value: "30300"
+            #- name: JVB_PORT
+            #  value: 30300
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -56,3 +65,14 @@ spec:
             - name: JVB_BREWERY_MUC
               value: jvbbrewery
             - name: TZ
+              value: Europe/Berlin
+  volumeClaimTemplates:
+    - metadata:
+        name: volumeclaimjvb
+      spec: 
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: ionos-enterprise-hdd
+        resources:
+          requests:
+            storage: 1Gi
+  
