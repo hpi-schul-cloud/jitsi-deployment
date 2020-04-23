@@ -40,8 +40,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: JVB_PORT
-              value: $((30300 + ${NODE_NAME##*-}))
             - name: XMPP_SERVER
               value: prosody
             - name: DOCKER_HOST_ADDRESS
