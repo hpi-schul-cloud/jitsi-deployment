@@ -17,6 +17,27 @@ spec:
       labels:
         k8s-app: jitsi
     spec:
+      volumes:
+        - name: web
+          configMap:
+            name: web
+            items:
+              - key: welcomePageAdditionalContent.html
+                path: welcomePageAdditionalContent.html
+              - key: plugin.head.html
+                path: plugin.head.html
+        - name: web-config
+          configMap:
+            name: web-config
+            items:
+              - key: config.js
+                path: config.js
+        - name: web-interface-config
+          configMap:
+            name: web-interface-config
+            items:
+              - key: interface_config.js
+                path: interface_config.js
       containers:
         - name: jicofo
           image: jitsi/jicofo
@@ -84,7 +105,24 @@ spec:
         - name: web
           image: jitsi/web
           imagePullPolicy: Always
+          volumeMounts:
+          - name: web
+            mountPath: /usr/share/jitsi-meet/static/welcomePageAdditionalContent.html
+            subPath: welcomePageAdditionalContent.html
+          - name: web
+            mountPath: /usr/share/jitsi-meet/plugin.head.html
+            subPath: plugin.head.html
+          - name: web-config
+            mountPath: /defaults/config.js
+            subPath: config.js
+          - name: web-interface-config
+            mountPath: /defaults/interface_config.js
+            subPath: interface_config.js
           env:
+            - name: DISABLE_HTTPS
+              value: "1"
+            - name: HTTP_PORT
+              value: "80"
             - name: XMPP_SERVER
               value: localhost
             - name: JICOFO_AUTH_USER
