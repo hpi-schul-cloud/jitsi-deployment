@@ -1,0 +1,13 @@
+prometheus:
+  url: "http://prometheus.monitoring.svc"
+rules:
+  custom:
+  - seriesQuery: 'container_network_transmit_bytes_total{interface="eth0"}'
+    resources:
+      overrides:
+        namespace: {resource: "namespace"}
+        pod: {resource: "pod"}
+    name:
+      matches: "^(.*)_total"
+      as: "${1}_per_second"
+    metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)'
