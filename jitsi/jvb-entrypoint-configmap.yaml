@@ -8,7 +8,7 @@ data:
     #!/bin/bash
     set -euo pipefail
 
-    apt-dpkg-wrap apt-get update && apt-dpkg-wrap apt-get -y install curl && apt-dpkg-wrap apt-get -y install jq
+    apt-dpkg-wrap apt-get update && apt-dpkg-wrap apt-get -y install curl jq
 
     if [[ "$1" =~ ^[0-9]+$ ]]; then
         BASE_PORT=$1
@@ -20,7 +20,7 @@ data:
     export JVB_PORT=$(($BASE_PORT+${HOSTNAME##*-}))
     echo "JVB_PORT=$JVB_PORT"
 
-    # Allow remote shutdown of JVB: 
+    # allow shutdown of JVB via Rest from localhost
     echo "org.jitsi.videobridge.ENABLE_REST_SHUTDOWN=true" >> /defaults/sip-communicator.properties
     echo " org.jitsi.videobridge.shutdown.ALLOWED_SOURCE_REGEXP=127.0.0.1" >> /defaults/sip-communicator.properties
 
