@@ -13,6 +13,7 @@ spec:
     matchLabels:
       k8s-app: jvb
   serviceName: jvb
+  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
