@@ -23,10 +23,15 @@ spec:
           configMap:
             name: jvb-entrypoint
             defaultMode: 0744
+      terminationGracePeriodSeconds: 2147483647
       containers:
         - name: jvb
           image: jitsi/jvb
           imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c ", "/usr/share/jitsi-videobridge/graceful_shutdown.sh -p $(pgrep -f java) -t 3"]
           command:
             - /scripts/entrypoint.sh
           args:

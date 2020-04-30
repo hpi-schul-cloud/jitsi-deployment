@@ -20,9 +20,12 @@ data:
     export JVB_PORT=$(($BASE_PORT+${HOSTNAME##*-}))
     echo "JVB_PORT=$JVB_PORT"
 
-    # allow shutdown of JVB via Rest from localhost
+    echo "Allowing shutdown of JVB via Rest from localhost..."
     echo "org.jitsi.videobridge.ENABLE_REST_SHUTDOWN=true" >> /defaults/sip-communicator.properties
     echo " org.jitsi.videobridge.shutdown.ALLOWED_SOURCE_REGEXP=127.0.0.1" >> /defaults/sip-communicator.properties
+
+    echo "Preventing JVB to get restarted when shutdown is intended..."
+    sed -i '/.*Graceful.*/a \ \ \ \ \ \ \ \ s6-svc -O \/var\/run\/s6\/services\/jvb' /usr/share/jitsi-videobridge/graceful_shutdown.sh
 
     exec "$@"
 
