@@ -24,6 +24,10 @@ spec:
           configMap:
             name: jvb-entrypoint
             defaultMode: 0744
+        - name: jvb-shutdown
+          configMap:
+            name: jvb-shutdown
+            defaultMode: 0744
       terminationGracePeriodSeconds: 2147483647
       containers:
         - name: jvb
@@ -32,15 +36,17 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["sh", "-c ", "/usr/share/jitsi-videobridge/graceful_shutdown.sh -p $(pgrep -f java) -t 3"]
+                command: ["bash", "/shutdown/graceful_shutdown.sh", "-t 3"]
           command:
-            - /scripts/entrypoint.sh
+            - /entrypoint/entrypoint.sh
           args:
             - "30300"
             - "/init"
           volumeMounts:
             - name: jvb-entrypoint
-              mountPath: /scripts
+              mountPath: /entrypoint
+            - name: jvb-shutdown
+              mountPath: /shutdown
           env:
             - name: NODE_NAME
               valueFrom:

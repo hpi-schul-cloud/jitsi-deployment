@@ -10,6 +10,7 @@ resources:
 - jitsi-deployment.yaml
 - web-configmap.yam
 - jvb-entrypoint-configmap.yaml
+- jvb-shutdown-configmap.yaml
 - metacontroller-namespace.yaml
 - service-per-pod-configmap.yaml
 - service-per-pod.yaml
