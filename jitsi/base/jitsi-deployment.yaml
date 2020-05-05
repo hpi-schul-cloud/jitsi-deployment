@@ -26,16 +26,8 @@ spec:
                 path: welcomePageAdditionalContent.html
               - key: plugin.head.html
                 path: plugin.head.html
-        - name: web-config
-          configMap:
-            name: web-config
-            items:
               - key: config.js
                 path: config.js
-        - name: web-interface-config
-          configMap:
-            name: web-interface-config
-            items:
               - key: interface_config.js
                 path: interface_config.js
       containers:

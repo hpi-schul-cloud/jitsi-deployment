@@ -21,6 +21,5 @@ resources:
 - https://github.com/jetstack/cert-manager/releases/download/v0.14.2/cert-manager.yaml
 - prod-cluster-issuer.yaml
 - prod-certificate.yaml
-
-commonLabels:
-  env: test
+patchesStrategicMerge:
+  - nginx-patch.yaml

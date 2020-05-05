@@ -1,0 +1,8 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: jitsi-messenger-schule
+  namespace: jitsi
+  dnsNames:
+  - jitsi.dev.messenger.schule
+  # Issuer references are always required.
