@@ -2,26 +2,32 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ./jitsi/jitsi-namespace.yaml
-- ./jitsi/jitsi-secret.yaml
-- ./jitsi/jitsi-deployment.yaml
-- ./jitsi/web-configmap.yaml
-- ./jitsi/jvb-entrypoint-configmap.yaml
-- ./jitsi/jvb-shutdown-configmap.yaml
-- ./jitsi/service-per-pod-decoratorcontroller.yaml
-- ./jitsi/jvb-statefulset.yaml
-- ./jitsi/prosody-service.yaml
-- ./jitsi/web-service.yaml
-- ./jitsi/jitsi-ingress.yaml
+- jitsi/jitsi-namespace.yaml
+- jitsi/jitsi-secret.yaml
+- jitsi/jitsi-deployment.yaml
+- jitsi/web-configmap.yaml
+- jitsi/jvb-entrypoint-configmap.yaml
+- jitsi/jvb-shutdown-configmap.yaml
+- jitsi/service-per-pod-decoratorcontroller.yaml
+- jitsi/jvb-statefulset.yaml
+- jitsi/prosody-service.yaml
+- jitsi/web-service.yaml
+- jitsi/jitsi-ingress.yaml
 - https://raw.githubusercontent.com/GoogleCloudPlatform/metacontroller/master/manifests/metacontroller-rbac.yaml
 - https://raw.githubusercontent.com/GoogleCloudPlatform/metacontroller/master/manifests/metacontroller.yaml
-- ./metacontroller/metacontroller-namespace.yaml
-- ./metacontroller/service-per-pod-configmap.yaml
-- ./metacontroller/service-per-pod-deployment.yaml
+- metacontroller/metacontroller-namespace.yaml
+- metacontroller/service-per-pod-configmap.yaml
+- metacontroller/service-per-pod-deployment.yaml
 - https://github.com/coreos/kube-prometheus/tree/release-0.5/manifests/setup
 - https://github.com/coreos/kube-prometheus/tree/release-0.5/manifests
+- monitoring/grafana-ingress.yaml
+- monitoring/grafana-pvc.yaml
+- monitoring/jvb-pod-monitor.yaml
+- monitoring/prometheus-roleBindingSpecificNamespaces.yaml
+- monitoring/prometheus-roleSpecificNamespaces.yaml
 - https://github.com/jetstack/cert-manager/releases/download/v0.14.3/cert-manager.yaml
-- ./cert-manager/cluster-issuer.yaml
+- cert-manager/cluster-issuer.yaml
 - https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
 patchesStrategicMerge:
-  - ./ingress-nginx/nginx-patch.yaml
+  - ingress-nginx/nginx-patch.yaml
+  - monitoring/grafana-deployment-patch.yaml
