@@ -1,8 +1,10 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: jitsi-ingress
-  namespace: jitsi
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   tls:
   - hosts:
@@ -12,7 +14,7 @@ spec:
     - host: jitsi.dev.messenger.schule
       http:
         paths:
-        - path: /
+        - path: /grafana(/|$)(.*)
           backend:
-            serviceName: web
-            servicePort: 80
+            serviceName: grafana
+            servicePort: http

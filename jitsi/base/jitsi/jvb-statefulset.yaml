@@ -30,6 +30,15 @@ spec:
             defaultMode: 0744
       terminationGracePeriodSeconds: 2147483647
       containers:
+        - name: prometheus-exporter
+          image: systemli/prometheus-jitsi-meet-exporter
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 9888
+          args:
+            - "-videobridge-url"
+            - "http://localhost:8080/colibri/stats"
         - name: jvb
           image: jitsi/jvb
           imagePullPolicy: Always
