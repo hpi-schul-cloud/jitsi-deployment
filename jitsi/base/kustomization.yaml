@@ -23,5 +23,5 @@ resources:
 - https://github.com/jetstack/cert-manager/releases/download/v0.14.3/cert-manager.yaml
 - ./cert-manager/cluster-issuer.yaml
 - https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
-#patchesStrategicMerge:
+patchesStrategicMerge:
   - ./ingress-nginx/nginx-patch.yaml
