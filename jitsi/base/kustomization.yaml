@@ -18,8 +18,9 @@ resources:
 - prosody-service.yaml
 - web-service.yaml
 - jitsi-ingress.yaml
-- https://github.com/jetstack/cert-manager/releases/download/v0.14.2/cert-manager.yaml
-- prod-cluster-issuer.yaml
-- prod-certificate.yaml
+- https://github.com/jetstack/cert-manager/releases/download/v0.14.3/cert-manager.yaml
+- cluster-issuer.yaml
+- certificate.yaml
+# TODO: HIER NOCH MONITORING-STACK EINFÜGEN!
 patchesStrategicMerge:
   - nginx-patch.yaml

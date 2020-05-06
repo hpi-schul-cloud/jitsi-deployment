@@ -10,3 +10,9 @@ spec:
     secretName: jitsi-messenger-schule-tls
   rules:
     - host: jitsi.dev.messenger.schule
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: web
+            servicePort: 80

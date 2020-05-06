@@ -1,7 +1,8 @@
 bases: 
 - ../../base
+resources:
+  - certificate.yaml
 patchesStrategicMerge:
   - jitsi-ingress-patch.yaml
-  - certificate-patch.yaml
 commonLabels:
   env: production
