@@ -2,25 +2,26 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
+- ./jitsi/jitsi-namespace.yaml
+- ./jitsi/jitsi-secret.yaml
+- ./jitsi/jitsi-deployment.yaml
+- ./jitsi/web-configmap.yaml
+- ./jitsi/jvb-entrypoint-configmap.yaml
+- ./jitsi/jvb-shutdown-configmap.yaml
+- ./jitsi/service-per-pod-decoratorcontroller.yaml
+- ./jitsi/jvb-statefulset.yaml
+- ./jitsi/prosody-service.yaml
+- ./jitsi/web-service.yaml
+- ./jitsi/jitsi-ingress.yaml
 - https://raw.githubusercontent.com/GoogleCloudPlatform/metacontroller/master/manifests/metacontroller-rbac.yaml
 - https://raw.githubusercontent.com/GoogleCloudPlatform/metacontroller/master/manifests/metacontroller.yaml
-- jitsi-namespace.yaml
-- jitsi-secret.yaml
-- jitsi-deployment.yaml
-- web-configmap.yam
-- jvb-entrypoint-configmap.yaml
-- jvb-shutdown-configmap.yaml
-- metacontroller-namespace.yaml
-- service-per-pod-configmap.yaml
-- service-per-pod.yaml
-- jvb-statefulset.yaml
-- prosody-service.yaml
-- web-service.yaml
-- jitsi-ingress.yaml
+- ./metacontroller/metacontroller-namespace.yaml
+- ./metacontroller/service-per-pod-configmap.yaml
+- ./metacontroller/service-per-pod-deployment.yaml
+- https://github.com/coreos/kube-prometheus/tree/release-0.5/manifests/setup
+- https://github.com/coreos/kube-prometheus/tree/release-0.5/manifests
 - https://github.com/jetstack/cert-manager/releases/download/v0.14.3/cert-manager.yaml
-- cluster-issuer.yaml
-- certificate.yaml
-# TODO: HIER NOCH MONITORING-STACK EINFÜGEN!
-patchesStrategicMerge:
-  - nginx-patch.yaml
+- ./cert-manager/cluster-issuer.yaml
+- https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
+#patchesStrategicMerge:
+  - ./ingress-nginx/nginx-patch.yaml
