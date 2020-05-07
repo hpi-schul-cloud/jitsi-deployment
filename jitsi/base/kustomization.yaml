@@ -18,7 +18,7 @@ resources:
 - metacontroller/metacontroller-namespace.yaml
 - metacontroller/service-per-pod-configmap.yaml
 - metacontroller/service-per-pod-deployment.yaml
-- https://github.com/coreos/kube-prometheus/manifests?ref=release-0.5
+- https://github.com/coreos/kube-prometheus?ref=release-0.5
 - monitoring/grafana-ingress.yaml
 - monitoring/grafana-pvc.yaml
 - monitoring/jvb-pod-monitor.yaml
@@ -27,6 +27,7 @@ resources:
 - cert-manager/cert-manager.yaml
 - cert-manager/cluster-issuer.yaml
 - ingress-nginx/deploy.yaml
+
 patchesStrategicMerge:
   - ingress-nginx/nginx-patch.yaml
   - monitoring/grafana-deployment-patch.yaml

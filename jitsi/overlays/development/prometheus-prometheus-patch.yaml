@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: k8s
+  namespace: monitoring
+spec:
+  resources:
+    requests:
+      memory: 400Mi
+      cpu: 400m
+    limits:
+      memory: 1000Mi
+      cpu: 1000m
+  storage:
+    volumeClaimTemplate:
+      metadata:
+        name: prometheus
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: ionos-enterprise-hdd
+        resources:
+          requests:
+            storage: 2Gi
