@@ -6,3 +6,4 @@ patchesStrategicMerge:
   - jvb-statefulset-patch.yaml
   - jitsi-ingress-patch.yaml
   - grafana-deployment-patch.yaml
+  - grafana-ingress-patch.yaml
