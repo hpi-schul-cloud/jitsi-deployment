@@ -18,10 +18,9 @@ Every directory in the directory tree (depicted below) contains a `kustomize.yam
 |   |   `-- jvb
 |   |-- metacontroller
 |   `-- monitoring
-|-- overlays
-|   |-- development
-|   `-- production
-`-- resources
+`-- overlays
+    |-- development
+    `-- production
 ```
 
 ## Requirements
@@ -37,4 +36,4 @@ To install the full setup go to either `overlays/development` or `overlays/produ
 $ kustomize build . | kubectl apply -f -
 ```
 
-The setup was tested against a managed Kubernetes cluster (v1..17.2) running on [IONOS Cloud](https://dcd.ionos.com/).
+The setup was tested against a managed Kubernetes cluster (v1.17.2) running on [IONOS Cloud](https://dcd.ionos.com/).
