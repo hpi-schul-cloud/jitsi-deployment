@@ -1,92 +1,40 @@
-# Setup
+# Jitsi Meet
 
-## Setup Dashboard
+Scalable video conferencing on Kubernetes.
 
-- Deploy Dashboard UI with `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml` (see [documentation](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md))
-- Create service account and cluster role binding by creating two files (e.g. `dashboard-service-account.yaml` and `dashboard-cluster-role-binding.yaml`, contents below) and run `kubectl apply -f dashboard-service-account.yaml -f dashboard-cluster-role-binding.yaml`
+## Structure
 
-`dashboard-service-account.yaml` has the following content:
-```
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
-```
+The whole setup is based on Kubernetes YAML files and patches for these files.
+It makes use of [kustomize](https://github.com/kubernetes-sigs/kustomize) to customize the raw YAMLs for each environment.
 
-`dashboard-cluster-role-binding.yaml` has the following content:
-```
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kubernetes-dashboard
-```
-
-- Find the bearer token to login with `kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')`
-- Run `kubectl proxy` (this command must be kept running as long as the dashboard is in use) and access http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
-- Paste the previously found token in the given field on the login page
-
-### Add Metrics Server
-
-- Clone the repo with `git clone https://github.com/kubernetes-sigs/metrics-server.git`
-- Add two more container arguments to the deployment in `metrics-server/deploy/kubernetes/metrics-server-deployment.yaml`:
+Every directory in the directory tree (depicted below) contains a `kustomize.yaml` file which defines resources (and possibly patches).
 
 ```
---kubelet-insecure-tls
---kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+|-- base
+|   |-- cert-manager
+|   |-- dashboard
+|   |-- ingress-nginx
+|   |-- jitsi
+|   |   `-- jvb
+|   |-- metacontroller
+|   `-- monitoring
+|-- overlays
+|   |-- development
+|   `-- production
+`-- resources
 ```
 
-- Apply all changes with `kubectl apply -f metrics-server/deploy/kubernetes/`
+## Requirements
 
-## Install Jitsi Meet
+- [kubectl/v1.17.2+](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kustomize/v3.5.4+](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv3.5.4)
 
-- Create a new namespace with `kubectl create namespace jitsi`
-- Create a secret with values (replace `<secret>` occurrences with actual secrets): `kubectl create secret -n jitsi generic jitsi-config --from-literal=JICOFO_COMPONENT_SECRET=<secret> --from-literal=JICOFO_AUTH_PASSWORD=<secret> --from-literal=JVB_AUTH_PASSWORD=<secret>`
-- Deploy the service to listen for JVB UDP traffic on all cluster nodes port 30300 with `kubectl create -f https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/dev/examples/kubernetes/jvb-service.yaml`
+## Install
 
-- Download https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/dev/examples/kubernetes/deployment.yaml and replace
+To install the full setup go to either `overlays/development` or `overlays/production` and run
 
-```
-- name: DOCKER_HOST_ADDRESS
-  value: <Set the address for any node in the cluster here>
+```bash
+$ kustomize build . | kubectl apply -f -
 ```
 
-with
-
-```
-- name: DOCKER_HOST_ADDRESS
-  valueFrom:
-    fieldRef:
-      fieldPath: status.hostIP
-```
-- Apply the deployment with `kubectl apply -f deployment.yaml`
-- Create a file named `jitsi-service.yaml` with the following content:
-
-```
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    service: web
-  name: web
-  namespace: jitsi
-spec:
-  ports:
-  - name: "https"
-    port: 443
-    targetPort: 443
-  selector:
-    k8s-app: jitsi
-  type: LoadBalancer
-```
-- To expose the webapp apply this with `kubectl create -f jitsi-service.yaml`
-- The service should now have an external IP address where you can reach the Jitsi installation
-
+The setup was tested against a managed Kubernetes cluster (v1..17.2) running on [IONOS Cloud](https://dcd.ionos.com/).

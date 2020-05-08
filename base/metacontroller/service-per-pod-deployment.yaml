@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-per-pod
+  namespace: metacontroller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-per-pod
+  template:
+    metadata:
+      labels:
+        app: service-per-pod
+    spec:
+      containers:
+      - name: hooks
+        image: metacontroller/jsonnetd:0.1
+        imagePullPolicy: Always
+        workingDir: /hooks
+        volumeMounts:
+        - name: hooks
+          mountPath: /hooks
+      volumes:
+      - name: hooks
+        configMap:
+          name: service-per-pod-hooks
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-per-pod
+  namespace: metacontroller
+spec:
+  selector:
+    app: service-per-pod
+  ports:
+  - port: 80
+    targetPort: 8080

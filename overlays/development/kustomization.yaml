@@ -1,0 +1,8 @@
+bases: 
+- ../../base
+resources:
+  - certificate.yaml
+patchesStrategicMerge:
+  - jvb-statefulset-patch.yaml
+  - jitsi-ingress-patch.yaml
+  - grafana-deployment-patch.yaml
