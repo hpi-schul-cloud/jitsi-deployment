@@ -2,8 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- metacontroller-rbac.yaml
-- metacontroller.yaml
 - metacontroller-namespace.yaml
 - service-per-pod-configmap.yaml
 - service-per-pod-deployment.yaml

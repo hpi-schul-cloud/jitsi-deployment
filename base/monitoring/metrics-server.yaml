@@ -1,16 +1,6 @@
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: system:aggregated-metrics-reader
-  labels:
-    rbac.authorization.k8s.io/aggregate-to-view: "true"
-    rbac.authorization.k8s.io/aggregate-to-edit: "true"
-    rbac.authorization.k8s.io/aggregate-to-admin: "true"
-rules:
-- apiGroups: ["metrics.k8s.io"]
-  resources: ["pods", "nodes"]
-  verbs: ["get", "list", "watch"]
+# Source: https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+# Changes:
+# - removed ClusterRole system:aggregated-metrics-reader because it is defined by kube-prometheus
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding

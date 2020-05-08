@@ -10,5 +10,4 @@ resources:
 - prometheus-roleSpecificNamespaces.yaml
 
 patchesStrategicMerge:
-  - metrics-server-patch.yaml
-  - grafana-deployment-patch.yaml
+- metrics-server-patch.yaml
