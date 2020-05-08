@@ -7,6 +7,8 @@ spec:
   template:
     spec:
       volumes:
+        - $patch: delete
+          name: grafana-storage
         - name: grafana-storage
           persistentVolumeClaim:
             claimName: grafana-storage
