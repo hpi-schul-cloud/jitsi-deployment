@@ -17,7 +17,7 @@
   "gnetId": 12098,
   "graphTooltip": 1,
   "id": 27,
-  "iteration": 1588755136330,
+  "iteration": 1588861515029,
   "links": [],
   "panels": [
     {
@@ -728,7 +728,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 0,
         "y": 4
@@ -819,7 +819,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 12,
         "y": 4
@@ -912,7 +912,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 11
       },
       "hiddenSeries": false,
       "id": 26,
@@ -941,8 +941,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{container='jvb',pod=~\"$pod\"}[5m])) / sum(machine_cpu_cores) * 100",
-          "legendFormat": "CPU usage",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{container='jvb',pod=~\"$pod\"}[5m])) by (pod) / ignoring(pod) group_left sum(kube_pod_container_resource_limits_cpu_cores{container=\"jvb\"}) * 100",
+          "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
@@ -1000,7 +1000,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 11
       },
       "hiddenSeries": false,
       "id": 30,
@@ -1029,8 +1029,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_working_set_bytes{container='jvb',pod=~\"$pod\"}) / sum(kube_node_status_allocatable_memory_bytes) * 100",
-          "legendFormat": "memory usage",
+          "expr": "sum(container_memory_working_set_bytes{container='jvb',pod=~\"jvb-.*\"}) by (pod) / ignoring(pod) group_left sum(kube_pod_container_resource_limits_memory_bytes{container=\"jvb\"}) * 100",
+          "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
@@ -1088,7 +1088,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "hiddenSeries": false,
       "id": 28,
@@ -1143,7 +1143,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "Bps",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1176,7 +1176,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 19
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1253,7 +1253,7 @@
       }
     }
   ],
-  "refresh": "10s",
+  "refresh": false,
   "schemaVersion": 22,
   "style": "dark",
   "tags": [
@@ -1264,7 +1264,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1291,7 +1291,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1311,5 +1311,5 @@
   "timezone": "",
   "title": "Jitsi Meet",
   "uid": "Wz9WOmrWz",
-  "version": 6
+  "version": 9
 }
