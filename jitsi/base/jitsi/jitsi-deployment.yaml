@@ -32,7 +32,7 @@ spec:
                 path: interface_config.js
       containers:
         - name: jicofo
-          image: jitsi/jicofo
+          image: jitsi/jicofo:stable-4548-1
           imagePullPolicy: Always
           env:
             - name: XMPP_SERVER
@@ -60,7 +60,7 @@ spec:
             - name: JVB_BREWERY_MUC
               value: jvbbrewery
         - name: prosody
-          image: jitsi/prosody
+          image: jitsi/prosody:stable-4548-1
           imagePullPolicy: Always
           env:
             - name: XMPP_DOMAIN
@@ -95,7 +95,7 @@ spec:
             - name: JVB_TCP_HARVESTER_DISABLED
               value: "true"
         - name: web
-          image: jitsi/web
+          image: jitsi/web:stable-4548-1
           imagePullPolicy: Always
           volumeMounts:
           - name: web
@@ -104,10 +104,10 @@ spec:
           - name: web
             mountPath: /usr/share/jitsi-meet/plugin.head.html
             subPath: plugin.head.html
-          - name: web-config
+          - name: web
             mountPath: /defaults/config.js
             subPath: config.js
-          - name: web-interface-config
+          - name: web
             mountPath: /defaults/interface_config.js
             subPath: interface_config.js
           env:

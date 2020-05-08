@@ -40,7 +40,7 @@ spec:
             - "-videobridge-url"
             - "http://localhost:8080/colibri/stats"
         - name: jvb
-          image: jitsi/jvb:stable-4548
+          image: jitsi/jvb:stable-4548-1
           imagePullPolicy: Always
           lifecycle:
             preStop:
