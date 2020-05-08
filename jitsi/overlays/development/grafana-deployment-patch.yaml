@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: monitoring
   name: grafana
+  namespace: monitoring
 spec:
   template:
     spec:
