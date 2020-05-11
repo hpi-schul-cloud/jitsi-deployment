@@ -12,3 +12,4 @@ resources:
 
 patchesStrategicMerge:
 - monitoring/grafana-deployment-patch.yaml
+- monitoring/prometheus-adapter-config-map-patch.yaml
