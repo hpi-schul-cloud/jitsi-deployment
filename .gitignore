@@ -1,4 +1,7 @@
 base/jitsi/jitsi-secret.yaml.bak
+loadtest/terraform.tfstate.backup
+loadtest/terraform.tfstate
+loadtest/.terraform
 
 .idea/
 .vscode/
