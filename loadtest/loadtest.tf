@@ -9,7 +9,7 @@ resource "profitbricks_server" "loadtest_server" {
   name              = "loadtest-server-${count.index}"
   datacenter_id     = var.datacenter
   cores             = 4
-  ram               = 4096
+  ram               = 16384
   availability_zone = "ZONE_1"
   cpu_family        = "INTEL_XEON"
   image_name        = var.image_name
