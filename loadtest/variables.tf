@@ -7,7 +7,7 @@ variable "datacenter" {
 variable "server_count" {
   description = "number of loadtest servers"
   type        = number
-  default     = 2
+  default     = 5
 }
 
 variable "hdd_size" {
