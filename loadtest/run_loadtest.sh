@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 #/ Usage: run_loadtest.sh [option..]
 #/ Description: Run array load test on a Jitsi Meet installation
@@ -69,7 +69,7 @@ if [ -z "$jitsiUrl" ]; then
 fi
 
 if [ -z "$sshKeyPath" ]; then
-  sshKeyPath="~/.ssh/id_rsa"
+  sshKeyPath='~/.ssh/id_rsa'
 fi
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
@@ -81,7 +81,7 @@ if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
   )
   info "Found ${#ips[@]} IPs: ${ips[*]}"
 
-  trap cleanup $sshKeyPath $ips EXIT
+  trap "cleanup $sshKeyPath $ips" EXIT
 
   info "Start docker-compose"
   for ip in "${ips[@]}"
