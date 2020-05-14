@@ -37,3 +37,11 @@ $ kustomize build . | kubectl apply -f -
 ```
 
 The setup was tested against a managed Kubernetes cluster (v1.17.2) running on [IONOS Cloud](https://dcd.ionos.com/).
+
+## Architecture
+
+The Jitsi Kubernetes namespace has the following architecture:
+
+![Architecture Jitsi Meet](docs/architecture/build/jitsi_meet.png)
+
+A more detailed explanation of the system architecure can be found in [docs/architecture/architecture.md](docs/architecture/architecture.md).
