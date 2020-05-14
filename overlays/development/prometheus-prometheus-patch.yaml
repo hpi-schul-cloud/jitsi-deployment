@@ -7,8 +7,8 @@ spec:
   retention: 2d
   resources:
     requests:
-      memory: 400Mi
-      cpu: 400m
+      memory: 1000Mi
+      cpu: 1000m
     limits:
       memory: 1000Mi
       cpu: 1000m
