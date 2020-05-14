@@ -10,7 +10,7 @@ from diagrams.k8s.network import Ingress, Service
 
 globe_img = "resources/globe.png"
 
-with Diagram(filename="jitsi_meet", direction='LR', show=False, outformat='svg'):
+with Diagram(filename="jitsi_meet", direction='LR', show=False, outformat='png'):
     with Cluster("Conference 1"):
         users_1 = [Custom("user", globe_img) for _ in range(3)]
     with Cluster("Conference 2"):
