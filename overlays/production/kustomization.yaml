@@ -8,3 +8,4 @@ patchesStrategicMerge:
   - jitsi-ingress-patch.yaml
   - grafana-deployment-patch.yaml
   - grafana-ingress-patch.yaml
+  - prometheus-prometheus-patch.yaml
