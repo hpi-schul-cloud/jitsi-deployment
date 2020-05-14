@@ -26,5 +26,12 @@ spec:
             - name: grafana-dashboard-jitsi
               mountPath: /grafana-dashboard-definitions/0/jitsi
               readOnly: false
+          resources:
+            limits: 
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
       securityContext:
         fsGroup: 427

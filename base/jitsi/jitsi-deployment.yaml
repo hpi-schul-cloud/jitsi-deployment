@@ -32,6 +32,13 @@ spec:
                 path: interface_config.js
       containers:
         - name: jicofo
+          resources:
+            limits:
+              memory: 300Mi
+              cpu: 100m
+            requests:
+              memory: 300Mi
+              cpu: 100m
           image: jitsi/jicofo:stable-4548-1
           imagePullPolicy: Always
           env:
@@ -59,7 +66,15 @@ spec:
               value: Europe/Berlin
             - name: JVB_BREWERY_MUC
               value: jvbbrewery
+            
         - name: prosody
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: 100m
+            requests:
+              memory: 100Mi
+              cpu: 100m
           image: jitsi/prosody:stable-4548-1
           imagePullPolicy: Always
           env:
@@ -95,6 +110,13 @@ spec:
             - name: JVB_TCP_HARVESTER_DISABLED
               value: "true"
         - name: web
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: 100m
+            requests:
+              memory: 100Mi
+              cpu: 100m
           image: jitsi/web:stable-4548-1
           imagePullPolicy: Always
           volumeMounts:

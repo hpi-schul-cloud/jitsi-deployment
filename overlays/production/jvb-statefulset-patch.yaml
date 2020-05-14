@@ -10,8 +10,8 @@ spec:
         - name: prometheus-exporter
           resources:
             requests:
-              cpu: "50m"
-              memory: "50Mi"
+              cpu: "100m"
+              memory: "100Mi"
             limits:
               cpu: "100m"
               memory: "100Mi"
