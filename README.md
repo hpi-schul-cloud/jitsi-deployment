@@ -42,6 +42,6 @@ The setup was tested against a managed Kubernetes cluster (v1.17.2) running on [
 
 The Jitsi Kubernetes namespace has the following architecture:
 
-![Architecture Jitsi Meet](docs/architecture/build/jitsi_meet.png)
+![Architecture Jitsi Meet](docs/architecture/build/jitsi_meet.svg)
 
 A more detailed explanation of the system architecure can be found in [docs/architecture/architecture.md](docs/architecture/architecture.md).

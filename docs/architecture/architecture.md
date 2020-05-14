@@ -2,4 +2,4 @@
 
 ## Jitsi Meet
 
-![Architecture Jitsi Meet](build/jitsi_meet.png)
+![Architecture Jitsi Meet](build/jitsi_meet.svg)
