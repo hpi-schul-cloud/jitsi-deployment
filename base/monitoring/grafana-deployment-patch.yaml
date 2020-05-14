@@ -12,6 +12,9 @@ spec:
         - name: grafana-storage
           persistentVolumeClaim:
             claimName: grafana-storage
+        - configMap:
+            name: grafana-dashboard-jitsi
+          name: grafana-dashboard-jitsi
       containers:
         - name: grafana
           env:
@@ -19,5 +22,9 @@ spec:
               value: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
             - name: GF_SERVER_SERVE_FROM_SUB_PATH
               value: "true"
+          volumeMounts:
+            - name: grafana-dashboard-jitsi
+              mountPath: /grafana-dashboard-definitions/0/jitsi
+              readOnly: false
       securityContext:
         fsGroup: 427
