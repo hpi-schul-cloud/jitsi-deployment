@@ -66,7 +66,6 @@ spec:
               value: Europe/Berlin
             - name: JVB_BREWERY_MUC
               value: jvbbrewery
-            
         - name: prosody
           resources:
             limits:

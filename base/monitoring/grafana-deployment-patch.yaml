@@ -27,7 +27,7 @@ spec:
               mountPath: /grafana-dashboard-definitions/0/jitsi
               readOnly: false
           resources:
-            limits: 
+            limits:
               cpu: 200m
               memory: 200Mi
             requests:
