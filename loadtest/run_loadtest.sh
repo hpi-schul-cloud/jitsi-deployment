@@ -7,7 +7,7 @@ set -eo pipefail
 #/ Options:
 #/   -u, --user: IONOS cloud user name
 #/   -pw, --password: IONOS cloud user password
-#/   -p, --participants: Number of video conference participants per worker conference
+#/   -p, --participants: Number of video conference participants per worker
 #/   -j, --jitsi-url: URL pointing to the Jitsi installation (optional, defaults to https://jitsi.dev.messenger.schule)
 #/   -d, --duration: Duration of each conference in seconds
 #/   -k, --ssh-key-path: Path to the SSH private key file used for connecting to the worker nodes (optional, defaults to ~/.ssh/id_rsa)
