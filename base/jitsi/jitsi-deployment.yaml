@@ -34,11 +34,11 @@ spec:
         - name: jicofo
           resources:
             limits:
-              memory: 300Mi
-              cpu: 100m
+              memory: 400Mi
+              cpu: 400m
             requests:
-              memory: 300Mi
-              cpu: 100m
+              memory: 400Mi
+              cpu: 400m
           image: jitsi/jicofo:stable-4548-1
           imagePullPolicy: Always
           env:
@@ -69,11 +69,11 @@ spec:
         - name: prosody
           resources:
             limits:
-              memory: 100Mi
-              cpu: 100m
+              memory: 300Mi
+              cpu: 300m
             requests:
-              memory: 100Mi
-              cpu: 100m
+              memory: 300Mi
+              cpu: 300m
           image: jitsi/prosody:stable-4548-1
           imagePullPolicy: Always
           env:
@@ -111,11 +111,11 @@ spec:
         - name: web
           resources:
             limits:
-              memory: 100Mi
-              cpu: 100m
+              memory: 300Mi
+              cpu: 400m
             requests:
-              memory: 100Mi
-              cpu: 100m
+              memory: 300Mi
+              cpu: 400m
           image: jitsi/web:stable-4548-1
           imagePullPolicy: Always
           volumeMounts:
