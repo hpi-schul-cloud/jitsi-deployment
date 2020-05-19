@@ -18,8 +18,8 @@ spec:
         - name: jvb
           resources:
             requests:
-              cpu: "3000m"
+              cpu: "8000m"
               memory: "1000Mi"
             limits:
-              cpu: "3000m"
+              cpu: "8000m"
               memory: "1000Mi"
