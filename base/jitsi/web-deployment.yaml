@@ -33,7 +33,7 @@ spec:
                 path: config.js
               - key: interface_config.js
                 path: interface_config.js
-      containers:  
+      containers:
         - name: web
           resources:
             limits:
@@ -80,6 +80,3 @@ spec:
               value: Europe/Berlin
             - name: JVB_TCP_HARVESTER_DISABLED
               value: "true"
-    
-
-        
