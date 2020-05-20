@@ -57,3 +57,37 @@ handles the configuration of the port in use by videobridge.
 
 In addition, all videobridges communicate with the `prosody` server via a [service](../../base/jitsi/prosody-service.yaml)
 of type `ClusterIP`.
+
+## Monitoring
+
+The monitoring stack is comprised of a [kube-prometheus](https://github.com/coreos/kube-prometheus) setup that integrates
+* [Prometheus Operator](https://github.com/coreos/prometheus-operator)
+* Highly available [Prometheus](https://prometheus.io/)
+* Highly available [Alertmanager](https://github.com/prometheus/alertmanager)
+* [Prometheus node-exporter](https://github.com/prometheus/node_exporter)
+* [Prometheus Adapter for Kubernetes Metrics APIs](https://github.com/DirectXMan12/k8s-prometheus-adapter)
+* [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics)
+* [Grafana](https://grafana.com/)
+
+This stack is adapted and patched to fit the needs of the Jitsi Meet setup.
+
+The [deployment patch for Grafana](../../base/monitoring/grafana-deployment-patch.yaml) adds a permanent storage to retain
+users and changes made in the dashboards. In addition, Grafana is configured to serve from the subpath `/grafana`.
+An [ingress](../../base/monitoring/grafana-ingress.yaml) is defined to route traffic to the Grafana instance.
+Again, SSL is terminated at the ingress.
+
+A role and a role binding to let Prometheus monitor the `jitsi` namespace is defined in
+[prometheus-roleBindingSpecificNamespaces.yaml](../../base/monitoring/prometheus-roleBindingSpecificNamespaces.yaml) and
+[prometheus-roleSpecificNamespaces.yaml](../../base/monitoring/prometheus-roleSpecificNamespaces.yaml) respectively.
+
+Prometheus also gets adapted by an environment specific [patch](../../overlays/production/prometheus-prometheus-patch.yaml)
+that adjusts CPU/memory requests and adds a persistent volume.
+
+Furthermore, [metrics-server](https://github.com/kubernetes-sigs/metrics-server) is used to aggregate resource usage data.
+
+### Videobridge monitoring
+
+The videobridge pods mentioned above have a sidecar container deployed that gathers metrics about the videobridge and
+exposes them via a Rest endpoint. This endpoint is scraped by Prometheus based on the definition of a
+[PodMonitor](../../base/monitoring/jvb-pod-monitor.yaml) available by the
+[Prometheus Operator](https://github.com/coreos/prometheus-operator#customresourcedefinitions).
