@@ -31,6 +31,10 @@ spec:
               cpu: 400m
           image: jitsi/jicofo:stable-4548-1
           imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /about/health
+              port: 8888
           env:
             - name: XMPP_SERVER
               value: prosody
@@ -56,3 +60,5 @@ spec:
               value: Europe/Berlin
             - name: JVB_BREWERY_MUC
               value: jvbbrewery
+            - name: JICOFO_ENABLE_HEALTH_CHECKS
+              value: "true"
