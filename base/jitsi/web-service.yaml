@@ -14,5 +14,5 @@ spec:
     port: 80
     targetPort: 80
   selector:
-    k8s-app: jitsi
+    k8s-app: web
   type: ClusterIP
