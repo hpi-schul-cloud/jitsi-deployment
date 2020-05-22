@@ -20,6 +20,13 @@ spec:
       labels:
         k8s-app: prosody
     spec:
+      volumes:
+        - name: prosody
+          configMap:
+            name: prosody
+            items:
+              - key: mod_prometheus.lua
+                path: mod_prometheus.lua
       containers:
         - name: prosody
           resources:
@@ -31,6 +38,9 @@ spec:
               cpu: 300m
           image: jitsi/prosody:stable-4548-1
           imagePullPolicy: Always
+          ports: 
+            - name: metrics
+              containerPort: 5280
           readinessProbe:
             exec:              
               command:
@@ -38,6 +48,10 @@ spec:
                 - --config
                 - /config/prosody.cfg.lua
                 - status
+          volumeMounts:
+          - name: prosody
+            mountPath: /prosody-plugins-custom/mod_prometheus.lua
+            subPath: mod_prometheus.lua
           env:
             - name: XMPP_DOMAIN
               value: meet.jitsi
@@ -70,3 +84,7 @@ spec:
               value: Europe/Berlin
             - name: JVB_TCP_HARVESTER_DISABLED
               value: "true"
+            - name: GLOBAL_MODULES
+              value: statistics,alert,prometheus
+            - name: GLOBAL_CONFIG
+              value: statistics = "internal";\nstatistics_interval = 15;
