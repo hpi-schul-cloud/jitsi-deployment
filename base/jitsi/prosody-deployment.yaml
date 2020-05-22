@@ -31,6 +31,13 @@ spec:
               cpu: 300m
           image: jitsi/prosody:stable-4548-1
           imagePullPolicy: Always
+          readinessProbe:
+            exec:              
+              command:
+                - prosodyctl
+                - --config
+                - /config/prosody.cfg.lua
+                - status
           env:
             - name: XMPP_DOMAIN
               value: meet.jitsi

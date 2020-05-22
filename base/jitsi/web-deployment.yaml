@@ -44,6 +44,9 @@ spec:
               cpu: 400m
           image: jitsi/web:stable-4548-1
           imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              port: 80
           volumeMounts:
           - name: web
             mountPath: /usr/share/jitsi-meet/static/welcomePageAdditionalContent.html
