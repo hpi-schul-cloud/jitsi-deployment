@@ -30,10 +30,28 @@ Every directory in the directory tree (depicted below) contains a `kustomize.yam
 
 ## Install
 
-To install the full setup go to either `overlays/development` or `overlays/production` and run
+To install the full setup go to either [`overlays/development`](overlays/development) or
+[`overlays/production`](overlays/production) and run
 
 ```bash
 $ kustomize build . | kubectl apply -f -
 ```
 
 The setup was tested against a managed Kubernetes cluster (v1.17.2) running on [IONOS Cloud](https://dcd.ionos.com/).
+
+## Architecture
+
+The Jitsi Kubernetes namespace has the following architecture:
+
+![Architecture Jitsi Meet](docs/architecture/build/jitsi_meet.png)
+
+A more detailed explanation of the system architecure can be found in [docs/architecture/architecture.md](docs/architecture/architecture.md).
+
+## Load Testing
+
+Terraform scripts can be found that set up multiple servers with an existing image can be found under [`loadtest`](loadtest).
+An [init script](loadtest/init.sh) is used to provision the necessary tools to that image. This image also needs SSH
+access set up with public key authentication.
+
+After starting a number of load test servers, the load test can be started by using the [run_loadtest.sh](loadtest/run_loadtest.sh)
+ script.

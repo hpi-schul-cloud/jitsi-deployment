@@ -1,0 +1,6 @@
+contextvars==2.4
+diagrams==0.10.0
+graphviz==0.13.2
+immutables==0.13
+Jinja2==2.11.2
+MarkupSafe==1.1.1

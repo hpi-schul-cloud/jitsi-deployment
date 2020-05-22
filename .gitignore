@@ -6,3 +6,4 @@ loadtest/.terraform.tfstate.lock.info
 
 .idea/
 .vscode/
+venv/
