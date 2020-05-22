@@ -51,6 +51,11 @@ spec:
           args:
             - "30300"
             - "/init"
+          readinessProbe:
+            httpGet:
+              path: /about/health
+              port: 8080
+            initialDelaySeconds: 10
           volumeMounts:
             - name: jvb-entrypoint
               mountPath: /entrypoint

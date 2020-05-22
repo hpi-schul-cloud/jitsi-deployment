@@ -10,16 +10,16 @@ spec:
         - name: prometheus-exporter
           resources:
             requests:
-              cpu: "50m"
-              memory: "50Mi"
+              cpu: "100m"
+              memory: "100Mi"
             limits:
               cpu: "100m"
               memory: "100Mi"
         - name: jvb
           resources:
             requests:
-              cpu: "4400m"
+              cpu: "8000m"
               memory: "1000Mi"
             limits:
-              cpu: "4800m"
-              memory: "1500Mi"
+              cpu: "8000m"
+              memory: "1000Mi"

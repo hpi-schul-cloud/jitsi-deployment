@@ -5,16 +5,3 @@ metadata:
   namespace: monitoring
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-spec:
-  tls:
-  - hosts:
-    - jitsi.dev.messenger.schule
-    secretName: jitsi-messenger-schule-tls
-  rules:
-    - host: jitsi.dev.messenger.schule
-      http:
-        paths:
-        - path: /grafana(/|$)(.*)
-          backend:
-            serviceName: grafana
-            servicePort: http

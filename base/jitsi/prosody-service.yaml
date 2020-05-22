@@ -17,4 +17,4 @@ spec:
     port: 5347
     targetPort: 5347
   selector:
-    k8s-app: jitsi
+    k8s-app: prosody

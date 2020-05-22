@@ -4,10 +4,11 @@ metadata:
   name: k8s
   namespace: monitoring
 spec:
+  retention: 7d
   resources:
     requests:
-      memory: 400Mi
-      cpu: 400m
+      memory: 1000Mi
+      cpu: 1000m
     limits:
       memory: 1000Mi
       cpu: 1000m
@@ -20,4 +21,4 @@ spec:
         storageClassName: ionos-enterprise-hdd
         resources:
           requests:
-            storage: 2Gi
+            storage: 30Gi

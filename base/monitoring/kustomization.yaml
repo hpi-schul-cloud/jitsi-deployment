@@ -8,6 +8,7 @@ resources:
 - jvb-pod-monitor.yaml
 - prometheus-roleBindingSpecificNamespaces.yaml
 - prometheus-roleSpecificNamespaces.yaml
+- jitsi-dashboard-configmap.yaml
 
 patchesStrategicMerge:
 - metrics-server-patch.yaml
