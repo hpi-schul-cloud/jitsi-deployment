@@ -27,6 +27,10 @@ spec:
             items:
               - key: mod_prometheus.lua
                 path: mod_prometheus.lua
+              - key: mod_measure_stanza_counts.lua
+                path: mod_measure_stanza_counts.lua
+              - key: mod_measure_client_presence.lua
+                path: mod_measure_client_presence.lua
       containers:
         - name: prosody
           resources:
@@ -52,6 +56,12 @@ spec:
           - name: prosody
             mountPath: /prosody-plugins-custom/mod_prometheus.lua
             subPath: mod_prometheus.lua
+          - name: prosody
+            mountPath: /usr/lib/prosody/modules/mod_measure_stanza_counts.lua
+            subPath: mod_measure_stanza_counts.lua
+          - name: prosody
+            mountPath: /usr/lib/prosody/modules/mod_measure_client_presence.lua
+            subPath: mod_measure_client_presence.lua
           env:
             - name: XMPP_DOMAIN
               value: meet.jitsi
@@ -85,6 +95,6 @@ spec:
             - name: JVB_TCP_HARVESTER_DISABLED
               value: "true"
             - name: GLOBAL_MODULES
-              value: statistics,alert,prometheus
+              value: prometheus,measure_stanza_counts,measure_client_presence
             - name: GLOBAL_CONFIG
               value: statistics = "internal";\nstatistics_interval = 15;
