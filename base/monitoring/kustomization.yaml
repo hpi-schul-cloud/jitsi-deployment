@@ -9,6 +9,8 @@ resources:
 - prometheus-roleBindingSpecificNamespaces.yaml
 - prometheus-roleSpecificNamespaces.yaml
 - jitsi-dashboard-configmap.yaml
+- bbb-service.yaml
+- bbb-service-monitor.yaml
 
 patchesStrategicMerge:
 - metrics-server-patch.yaml

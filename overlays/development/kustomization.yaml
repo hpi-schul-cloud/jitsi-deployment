@@ -3,6 +3,7 @@ bases:
 resources:
   - certificate.yaml
   - jvb-hpa.yaml
+  - bbb-endpoints.yaml
 patchesStrategicMerge:
   - jvb-statefulset-patch.yaml
   - jitsi-ingress-patch.yaml

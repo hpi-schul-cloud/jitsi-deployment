@@ -53,4 +53,5 @@ Terraform scripts can be found that set up multiple servers with an existing ima
 An [init script](loadtest/init.sh) is used to provision the necessary tools to that image. This image also needs SSH
 access set up with public key authentication.
 
-After starting a number of load test servers, the load test can be started by using the [run_loadtest.sh](loadtest/run_loadtest.sh) script. Results can be found at [docs/loadtests/loadtestresults.md](docs/loadtests/loadtestresults.md)
+After starting a number of load test servers, the load test can be started by using the [run_loadtest.sh](loadtest/run_loadtest.sh) script.
+Results can be found in [docs/loadtests/loadtestresults.md](docs/loadtests/loadtestresults.md).

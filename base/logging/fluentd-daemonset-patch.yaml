@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: fluentd
+          env:
+            - name:  FLUENT_ELASTICSEARCH_HOST
+              value: "elasticsearch-es-http.logging.svc.cluster.local"
+            - name:  FLUENT_ELASTICSEARCH_PORT
+              value: "9200"
+            - name: FLUENT_ELASTICSEARCH_SCHEME
+              value: "https"
+            - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
+              value: "false"
+            - name: FLUENT_ELASTICSEARCH_USER
+              value: "elastic"
+            - $patch: delete
+              name: FLUENT_ELASTICSEARCH_PASSWORD
+            - name: FLUENT_ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: elasticsearch-es-elastic-user
+                  key: elastic
+# elasticsearch secrect must be copied to kube-system namespace:
+# kubectl get secret elasticsearch-es-elastic-user --namespace=logging --export -o yaml | kubectl apply --namespace=kube-system -f -

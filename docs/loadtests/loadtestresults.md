@@ -194,7 +194,8 @@ Not tested.
 </tr>
 </tbody>
 </table>
-## 2: Eight smaller conferences in parallel
+
+## 2 Eight smaller conferences in parallel
 
 Each of the eight test servers start exactly one conference with a certain number of participants. The script [run_loadtest.sh](loadtest/run_loadtest.sh) was used for this purpose. 
 

@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - https://github.com/coreos/kube-prometheus?ref=release-0.5
 - monitoring/
+- logging/
 - https://github.com/GoogleCloudPlatform/metacontroller?ref=v0.4.0
 - metacontroller/
 - cert-manager/

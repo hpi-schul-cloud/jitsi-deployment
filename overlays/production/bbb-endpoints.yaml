@@ -1,0 +1,16 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: bbb
+  namespace: monitoring
+  labels:
+    k8s-app: bbb-metrics
+subsets:
+  - addresses:
+      - ip: 81.173.113.21
+      - ip: 185.48.118.239
+      - ip: 185.48.118.241
+      - ip: 185.132.47.147
+    ports:
+      - name: metrics
+        port: 9100
