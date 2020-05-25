@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: bbb-service-monitor
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      k8s-app: bbb-metrics
+  namespaceSelector:
+    any: false
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 10s
+      honorLabels: true

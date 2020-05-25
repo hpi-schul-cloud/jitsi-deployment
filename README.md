@@ -54,4 +54,4 @@ An [init script](loadtest/init.sh) is used to provision the necessary tools to t
 access set up with public key authentication.
 
 After starting a number of load test servers, the load test can be started by using the [run_loadtest.sh](loadtest/run_loadtest.sh) script.
-Results can be found in [loadtestresults.md](docs/loadtests/loadtestresults.md).
+Results can be found in [docs/loadtests/loadtestresults.md](docs/loadtests/loadtestresults.md).
