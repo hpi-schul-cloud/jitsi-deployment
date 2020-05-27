@@ -49,7 +49,7 @@ spec:
           command:
             - /entrypoint/entrypoint.sh
           args:
-            - "30300"
+            - "30300" # this is the JVB port; each additional JVB will add 1 to this port
             - "/init"
           readinessProbe:
             httpGet:
@@ -105,10 +105,10 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: jvb
-      spec: 
+      spec:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: ionos-enterprise-hdd
         resources:
           requests:
             storage: 1Gi
-  
+

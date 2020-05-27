@@ -26,8 +26,15 @@ data:
     function(request) {
       local statefulset = request.object,
       local labelKey = statefulset.metadata.annotations["service-per-pod-label"],
-      local basePort = 30300,
-      
+
+      // the base port for is collected from the container setup
+      local basePort = std.parseInt([
+                         a for a in [
+                             c for c in statefulset.spec.template.spec.containers
+                             if c.name == 'jvb'
+                           ][0].args
+                           if std.startsWith(a, '3') && std.length(a) == 5][0]),
+
       // Create a service for each Pod, with a selector on the given label key.
       attachments: [
         {
@@ -41,7 +48,7 @@ data:
           selector: {
               [labelKey]: statefulset.metadata.name + "-" + index
             },
-            type: "NodePort", 
+            type: "NodePort",
             externalTrafficPolicy: "Local",
             ports: [
               {
