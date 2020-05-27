@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: jitsi-haproxy-ingress
   namespace: jitsi
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: "haproxy"
 spec:
   rules:

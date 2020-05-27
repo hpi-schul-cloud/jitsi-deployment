@@ -4,7 +4,7 @@
 from diagrams import Diagram, Cluster
 from diagrams.custom import Custom
 from diagrams.k8s.clusterconfig import HPA
-from diagrams.k8s.compute import Deployment, Pod, ReplicaSet, StatefulSet
+from diagrams.k8s.compute import Deployment, Pod, StatefulSet
 from diagrams.k8s.network import Ingress, Service
 
 globe_img = "resources/globe.png"
@@ -13,7 +13,7 @@ graph_attr = {
     "pad": "0.5"
 }
 
-with Diagram(filename="jitsi_meet", direction='LR', show=False, outformat='png', graph_attr=graph_attr):
+with Diagram(filename="jitsi_meet", direction='TB', show=False, outformat='png', graph_attr=graph_attr):
     with Cluster("Conference 1"):
         users_1 = [Custom("user", globe_img) for _ in range(3)]
     with Cluster("Conference 2"):
@@ -34,9 +34,9 @@ with Diagram(filename="jitsi_meet", direction='LR', show=False, outformat='png',
         Deployment("web") >> web_pod
         ingress >> Service("web") >> web_pod
         prosody_service = Service("prosody")
-        prosody_service - web_pod
-        prosody_service - prosody_pod
-        prosody_service - jicofo_pod
+        prosody_service >> prosody_pod
+        prosody_service << web_pod
+        prosody_service << jicofo_pod
 
         n_jvbs = 3
         with Cluster("Jitsi Videobridge"):
