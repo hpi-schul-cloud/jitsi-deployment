@@ -3,7 +3,4 @@ kind: Kustomization
 
 resources:
 - haproxy-ingress.yaml
-
-patchesStrategicMerge:
-- haproxy-controller-patch.yaml
-- haproxy-service-patch.yaml
+- haproxy-service.yaml

@@ -5,6 +5,9 @@ metadata:
   namespace: jitsi
   annotations:
     kubernetes.io/ingress.class: "haproxy"
+    ingress.kubernetes.io/config-backend: |
+      stick-table type string len 128 size 2k expire 1d
+      stick on path if !{ path_beg /images || path_beg /lang || path_beg /libs || path_beg /http-bind || path_beg /css }   
 spec:
   rules:
     - http:
