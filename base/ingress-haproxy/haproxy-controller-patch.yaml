@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: haproxy-ingress
+  name: haproxy-ingress
+  namespace: haproxy-controller
+spec:
+  template:
+    spec:
+      containers:
+      - name: haproxy-ingress
+        args:
+          - --configmap=haproxy-controller/haproxy-configmap
+          - --default-backend-service=haproxy-controller/ingress-default-backend
+          - --ingress.class=haproxy
