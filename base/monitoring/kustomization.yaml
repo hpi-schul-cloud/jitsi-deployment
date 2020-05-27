@@ -6,11 +6,12 @@ resources:
 - grafana-ingress.yaml
 - grafana-pvc.yaml
 - jvb-pod-monitor.yaml
-- prometheus-roleBindingSpecificNamespaces.yaml
-- prometheus-roleSpecificNamespaces.yaml
+- prosody-pod-monitor.yaml
 - jitsi-dashboard-configmap.yaml
 - bbb-service.yaml
 - bbb-service-monitor.yaml
 
 patchesStrategicMerge:
 - metrics-server-patch.yaml
+- grafana-deployment-patch.yaml
+- prometheus-adapter-config-map-patch.yaml

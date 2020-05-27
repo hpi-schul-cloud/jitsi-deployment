@@ -3,10 +3,13 @@ kind: Kustomization
 
 resources:
 - jitsi-namespace.yaml
+- prometheus-roleBindingSpecificNamespaces.yaml
+- prometheus-roleSpecificNamespaces.yaml
 - jitsi-secret.yaml
 - web-deployment.yaml
 - jicofo-deployment.yaml
 - prosody-deployment.yaml
+- prosody-configmap.yaml
 - web-configmap.yaml
 - prosody-service.yaml
 - web-service.yaml

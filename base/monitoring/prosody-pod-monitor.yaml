@@ -8,8 +8,6 @@ spec:
     matchLabels:
       k8s-app: prosody
   namespaceSelector:
-    any: false
-    matchNames:
-      - jitsi
+    any: true
   podMetricsEndpoints:
   - port: metrics
