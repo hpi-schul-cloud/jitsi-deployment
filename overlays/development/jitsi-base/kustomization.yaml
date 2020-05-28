@@ -1,0 +1,10 @@
+bases:
+  - ../../../base/jitsi
+
+resources:
+  - jvb-hpa.yaml
+  - certificate.yaml
+
+patchesStrategicMerge:
+  - jvb-statefulset-patch.yaml
+  - jitsi-ingress-patch.yaml

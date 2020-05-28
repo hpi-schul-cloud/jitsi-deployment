@@ -1,0 +1,12 @@
+bases:
+  - ../jitsi-base
+
+resources:
+  - jitsi-namespace.yaml
+
+patchesStrategicMerge:
+  - jvb-statefulset-patch.yaml
+  - jvb-pod-monitor.yaml
+  - prosody-pod-monitor.yaml
+
+namespace: jitsi-0

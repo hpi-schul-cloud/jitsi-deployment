@@ -8,7 +8,7 @@ metadata:
   annotations:
     service-per-pod-label: "statefulset.kubernetes.io/pod-name"
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       k8s-app: jvb
@@ -49,7 +49,6 @@ spec:
           command:
             - /entrypoint/entrypoint.sh
           args:
-            - "30300" # this is the JVB port; each additional JVB will add 1 to this port
             - "/init"
           readinessProbe:
             httpGet:
