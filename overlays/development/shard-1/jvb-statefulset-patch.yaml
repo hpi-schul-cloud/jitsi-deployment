@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: jitsi
+  name: jvb
+spec:
+  template:
+    spec:
+      nodeSelector:
+        topology.kubernetes.io/zone: ZONE_2
+      containers:
+        - name: jvb
+          args:
+            - "30400"
+            - "/init"

@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1alpha3
+kind: Certificate
+metadata:
+  namespace: jitsi
+  name: jitsi-messenger-schule
+spec:
+  duration: 2160h0m0s # 90d
+  renewBefore: 360h0m0s # 15d
+  organization:
+    - hpi
+  keySize: 2048
+  keyAlgorithm: rsa
+  keyEncoding: pkcs1
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - jitsi.dev.messenger.schule
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  secretName: jitsi-messenger-schule-tls
