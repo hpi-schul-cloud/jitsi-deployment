@@ -14,7 +14,7 @@ resource "profitbricks_k8s_node_pool" "prod_zone_1" {
     day_of_the_week = "Saturday"
     time            = "10:26:26Z"
   }
-  datacenter_id     = "df8bd51c-298f-4981-8df8-6fd07340b397" # Video Data Center
+  datacenter_id     = var.datacenter
   k8s_cluster_id    = profitbricks_k8s_cluster.prod.id
   cpu_family        = "INTEL_XEON"
   availability_zone = "ZONE_1"
@@ -32,7 +32,7 @@ resource "profitbricks_k8s_node_pool" "prod_zone_2" {
     day_of_the_week = "Wednesday"
     time            = "22:52:42Z"
   }
-  datacenter_id     = "df8bd51c-298f-4981-8df8-6fd07340b397" # Video Data Center
+  datacenter_id     = var.datacenter
   k8s_cluster_id    = profitbricks_k8s_cluster.prod.id
   cpu_family        = "INTEL_XEON"
   availability_zone = "ZONE_2"
