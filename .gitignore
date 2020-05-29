@@ -1,8 +1,19 @@
 base/jitsi/jitsi-secret.yaml.bak
+
 loadtest/terraform.tfstate.backup
 loadtest/terraform.tfstate
 loadtest/.terraform
 loadtest/.terraform.tfstate.lock.info
+
+cluster/dev/terraform.tfstate.backup
+cluster/dev/terraform.tfstate
+cluster/dev/.terraform
+cluster/dev/.terraform.tfstate.lock.info
+
+cluster/prod/terraform.tfstate.backup
+cluster/prod/terraform.tfstate
+cluster/prod/.terraform
+cluster/prod/.terraform.tfstate.lock.info
 
 .idea/
 .vscode/
