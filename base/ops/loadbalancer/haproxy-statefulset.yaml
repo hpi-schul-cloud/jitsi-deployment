@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: haproxy
+  namespace: loadbalancer
+  labels:
+    k8s-app: haproxy
+spec:
+  replicas: 2
+  serviceName: haproxy
+  selector:
+    matchLabels:
+      k8s-app: haproxy
+  template:
+    metadata:
+      labels:
+        k8s-app: haproxy
+    spec:
+      volumes:
+        - name: haproxy-config
+          configMap:
+            name: haproxy-config
+            items:
+              - key: haproxy.cfg
+                path: haproxy.cfg
+      containers:
+      - name: haproxy
+        image: haproxy:2.1
+        ports:
+        - name: http
+          containerPort: 80
+        - name: stats
+          containerPort: 9090
+        - name: peering
+          containerPort: 1024
+        volumeMounts:
+          - mountPath: /usr/local/etc/haproxy/haproxy.cfg
+            name: haproxy-config
+            subPath: haproxy.cfg
