@@ -15,13 +15,6 @@ data:
       timeout connect   5s
       timeout client    50s
       timeout server    50s
-
-    listen stats
-      bind 127.0.0.1:9090
-      balance
-      mode http
-      stats enable
-      stats auth admin:admin
     
     frontend http_in
       bind *:80
