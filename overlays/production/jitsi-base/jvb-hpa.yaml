@@ -9,7 +9,7 @@ spec:
     kind: StatefulSet
     name: jvb
   minReplicas: 2
-  maxReplicas: 2
+  maxReplicas: 6
   metrics:
     - type: Pods
       pods:
