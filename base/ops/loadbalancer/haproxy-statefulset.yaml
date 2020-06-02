@@ -26,6 +26,13 @@ spec:
       containers:
       - name: haproxy
         image: haproxy:2.1
+        command: ["bash", "-c"]
+        args: ["[[ $HOSTNAME = 'haproxy-1' ]] && export OTHER_HOSTNAME='haproxy-0' || export OTHER_HOSTNAME='haproxy-1'; exec /docker-entrypoint.sh haproxy -f /usr/local/etc/haproxy/haproxy.cfg"]
+        env:
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
         ports:
         - name: http
           containerPort: 80
