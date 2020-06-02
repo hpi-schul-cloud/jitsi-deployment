@@ -8,3 +8,4 @@ resources:
 - cert-manager/
 - ingress-nginx/
 - dashboard/
+- loadbalancer/

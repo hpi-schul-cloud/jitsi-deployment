@@ -14,5 +14,4 @@ resources:
 - web-configmap.yaml
 - prosody-service.yaml
 - web-service.yaml
-- jitsi-ingress.yaml
 - jvb/

@@ -5,14 +5,7 @@ metadata:
   namespace: loadbalancer
 spec:
   tls:
-    - hosts:
-        - jitsi.dev.messenger.schule
-      secretName: jitsi-messenger-schule-tls
-  rules:
-    - host: jitsi.dev.messenger.schule
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: haproxy
-              servicePort: 80
+  - hosts:
+    # Fill in host here:
+    - jitsi.domainname
+    secretName: jitsi-messenger-schule-tls

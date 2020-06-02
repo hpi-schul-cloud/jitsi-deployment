@@ -1,0 +1,10 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: jvb-pod-monitor
+  namespace: jitsi
+spec:
+  namespaceSelector:
+    any: false
+    matchNames:
+      - jitsi-1
