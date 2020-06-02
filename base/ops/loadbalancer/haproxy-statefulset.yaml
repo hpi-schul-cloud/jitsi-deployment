@@ -27,7 +27,13 @@ spec:
       - name: haproxy
         image: haproxy:2.1
         command: ["bash", "-c"]
-        args: ["[[ $HOSTNAME = 'haproxy-1' ]] && export OTHER_HOSTNAME='haproxy-0' || export OTHER_HOSTNAME='haproxy-1'; exec /docker-entrypoint.sh haproxy -f /usr/local/etc/haproxy/haproxy.cfg"]
+        args:
+          - >-
+            apt-get update && apt-get install -y dnsutils;
+            [[ $HOSTNAME = 'haproxy-1' ]] &&
+            export OTHER_HOSTNAME=haproxy-0 OTHER_IP=$(nslookup haproxy-0 | awk 'NR==5 {print $2}') ||
+            export OTHER_HOSTNAME=haproxy-1 OTHER_IP=$(nslookup haproxy-1 | awk 'NR==5 {print $2}');
+            exec /docker-entrypoint.sh haproxy -f /usr/local/etc/haproxy/haproxy.cfg
         env:
           - name: MY_POD_IP
             valueFrom:

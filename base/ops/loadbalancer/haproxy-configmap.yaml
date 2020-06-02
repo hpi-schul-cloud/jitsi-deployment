@@ -6,13 +6,14 @@ metadata:
 data:
   haproxy.cfg: |
     global
-      log stdout format raw local0
+      log stdout format raw local0 info
       stats socket ipv4@127.0.0.1:9999 level admin
       stats socket /var/run/hapee-lb.sock mode 666 level admin
       stats timeout 2m
 
     defaults
       log               global
+      option            httplog
       retries           3
       maxconn           2000
       timeout connect   5s
@@ -24,12 +25,12 @@ data:
       mode http
       option forwardfor
       option http-keep-alive
-      option httplog
       default_backend jitsi-meet
 
     peers mypeers
+      log stdout format raw local0 info
       peer "${HOSTNAME}" "${MY_POD_IP}:1024"
-      peer "${OTHER_HOSTNAME}" "${OTHER_HOSTNAME}:1024"
+      peer "${OTHER_HOSTNAME}" "${OTHER_IP}:1024"
 
     backend jitsi-meet
       balance roundrobin
