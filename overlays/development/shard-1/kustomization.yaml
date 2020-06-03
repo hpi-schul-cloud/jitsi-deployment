@@ -3,18 +3,11 @@ bases:
 
 patchesStrategicMerge:
   - jvb-statefulset-patch.yaml
-  - jvb-pod-monitor.yaml
-  - prosody-pod-monitor.yaml
+  - prosody-service-patch.yaml
+  - jicofo-deployment-patch.yaml
+  - web-deployment-patch.yaml
+  - prosody-deployment-patch.yaml
 
 namespace: jitsi
 
 namePrefix: shard-1-
-
-vars:
-  - name: PROSODY_SERVICE
-    objref:
-      kind: Service
-      name: shard-0-prosody
-      apiVersion: v1
-    fieldref:
-      fieldpath: metadata.name

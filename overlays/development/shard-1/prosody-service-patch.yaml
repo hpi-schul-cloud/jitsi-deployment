@@ -1,7 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: jitsi
   name: prosody
 spec:
   selector:
-    shard: 1
+    shard: "1"

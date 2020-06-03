@@ -2,7 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- prosody-pod-monitor.yaml
 - jitsi-secret.yaml
 - web-deployment.yaml
 - jicofo-deployment.yaml
@@ -10,5 +9,4 @@ resources:
 - prosody-configmap.yaml
 - web-configmap.yaml
 - prosody-service.yaml
-- web-service.yaml
 - jvb/

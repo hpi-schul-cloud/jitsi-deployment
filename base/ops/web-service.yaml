@@ -6,10 +6,10 @@ metadata:
     service: web
   name: web
 spec:
+  clusterIP: None
   ports:
   - name: "http"
     port: 80
     targetPort: 80
   selector:
     k8s-app: web
-  type: ClusterIP

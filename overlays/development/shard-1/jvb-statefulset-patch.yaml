@@ -4,12 +4,21 @@ metadata:
   namespace: jitsi
   name: jvb
 spec:
+  selector:
+    matchLabels:
+      k8s-app: shard-1-jvb
   template:
+    metadata:
+      labels:
+        k8s-app: shard-1-jvb
     spec:
       nodeSelector:
         topology.kubernetes.io/zone: ZONE_2
       containers:
         - name: jvb
+          env:
+            - name: XMPP_SERVER
+              value: shard-1-prosody
           args:
             - "30400"
             - "/init"
