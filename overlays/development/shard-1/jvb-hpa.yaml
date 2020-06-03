@@ -7,7 +7,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: StatefulSet
-    name: jvb
+    name: shard-1-jvb
   minReplicas: 1
   maxReplicas: 2
   metrics:

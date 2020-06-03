@@ -1,6 +1,9 @@
 bases:
   - ../jitsi-base
 
+resources:
+  - jvb-hpa.yaml
+  
 patchesStrategicMerge:
   - jvb-statefulset-patch.yaml
   - prosody-service-patch.yaml
