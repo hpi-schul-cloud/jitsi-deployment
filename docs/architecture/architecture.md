@@ -4,7 +4,7 @@
 
 ### Components
 
-A Jitsi Meet installation consists of the following different components:
+A Jitsi Meet installation (consisting of one shard) consists of the following different components:
 
 1. `web` This container represents the web frontend and is the entrypoint for each user.
 2. `jicofo` This component is responsible for managing media sessions between each of the participants and the videobridge.
@@ -21,23 +21,36 @@ In this setup the videobridges can be scaled up and down depending on the curren
 (number of video conferences and participants). The videobridge typically is the component with the highest load and
 therefore the main part that needs to be scaled.
 Nevertheless, the single containers (`web`, `jicofo`, `prosody`) are also prone to running out of resources.
-This can be solved by scaling to multiple shards. Currently, this is not implemented within this setup but will
-be addressed at a later stage. More information about this topic can be found in the [Scaling Jitsi Meet in the Cloud Tutorial
+This can be solved by scaling to multiple shards and we will explain this below. More information about this topic can be found in the [Scaling Jitsi Meet in the Cloud Tutorial
 ](https://www.youtube.com/watch?v=Jj8a6ZRgehI).
+
+### Shards
+We allow the setup of several shards. We encounter the following difficulties in that case:
+
+* We need to loadbalance the traffic between the two shards.
+* We have to remember on which shard the conferences were allocated, so that participants joining an existing conference are routed to the shard, where the conference takes place.
+
+To achieve this, we use the following setup:
+![Architecture Sharding](build/jitsi_sharding.png)
+
+Each of the shards have the structure described in the chapter [Components](##Components)
+
+HAProxy is the central component here, as it allows the usage of [stick tables](https://www.haproxy.com/de/blog/introduction-to-haproxy-stick-tables/). We use [them](../../base/ops/loadbalancer/haproxy-configmap.yaml) to save the information, on which shard the conferences take place. To decrease the risk of failure, we are using a Statefulset consisting of two HAProxy-Pods. They are sharing the information on the existing conferences using services between them and HAProxy's peering functionality.  
+
+By default, we are using two shards.
 
 ### Kubernetes Setup
 
-Making use of the Kubernetes framework the current shard setup looks as follows:
+Making use of the Kubernetes framework the setup for every shard looks as follows:
 
 ![Architecture Jitsi Meet](build/jitsi_meet.png)
 
 The entrypoint for every user is the ingress that is defined in [jitsi-ingress.yaml](../../base/jitsi/jitsi-ingress.yaml)
 and patched for each environment by [jitsi-ingress-patch.yaml](../../overlays/production/jitsi-ingress-patch.yaml).
-At this point SSL is terminated and forwarded to the [`web` service](../../base/jitsi/web-service.yaml) in plaintext (port 80)
+At this point SSL is terminated and forwarded via HAProxy to the [`web` service](../../base/jitsi/web-service.yaml) in plaintext (port 80)
 which in turn exposes the web frontend inside the cluster.
 
-The single containers (`web`, `jicofo`, `prosody`) all run together inside a single pod called `jitsi`. This pod is
-managed by a rolling [deployment](../../base/jitsi/jitsi-deployment.yaml).
+The other containers [jicofo](../../base/jitsi/jicofo-deployment.yaml), [web](../../base/jitsi/web-deployment.yaml) and [prosody](../../base/jitsi/prosody-deployment.yaml), which are necessary for setting up, are each running in a rolling deployment.
 
 When a user starts a conference it is assigned to a videobridge. The video streaming happens directly between the user
 and this videobridge. Therefore the videobridges need to be open to the internet. This happens with a service of type `NodePort`
@@ -53,7 +66,7 @@ To achieve the setup of an additional `NodePort` service on a dedicated port per
 This [`service-per-pod` controller](../../base/metacontroller/service-per-pod-configmap.yaml) is triggered by the
 creation of a new videobridge pod and sets up the new service binding to a port defined by a base port (30000) plus the
 number of the videobridge pod (e.g. 30001 for pod `jvb-1`). A [startup script](../../base/jitsi/jvb/jvb-entrypoint-configmap.yaml)
-handles the configuration of the port in use by videobridge.
+handles the configuration of the port in use by videobridge. When multiple shards exist, we use the ports 301xx (for the second shard), 302xx (for the third shard) and so on for the videobridges of the additional shards. That means, you can use 100 JVBs per shard at most.
 
 In addition, all videobridges communicate with the `prosody` server via a [service](../../base/jitsi/prosody-service.yaml)
 of type `ClusterIP`.
@@ -89,5 +102,5 @@ Furthermore, [metrics-server](https://github.com/kubernetes-sigs/metrics-server)
 
 The videobridge pods mentioned above have a sidecar container deployed that gathers metrics about the videobridge and
 exposes them via a Rest endpoint. This endpoint is scraped by Prometheus based on the definition of a
-[PodMonitor](../../base/monitoring/jvb-pod-monitor.yaml) available by the
+[PodMonitor](../../base/ops/monitoring/jvb-pod-monitor.yaml) available by the
 [Prometheus Operator](https://github.com/coreos/prometheus-operator#customresourcedefinitions).
