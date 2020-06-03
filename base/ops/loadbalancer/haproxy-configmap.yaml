@@ -30,6 +30,15 @@ data:
       option forwardfor
       option http-keep-alive
       default_backend jitsi-meet
+    
+    frontend stats
+      mode http
+      bind *:9090
+      option http-use-htx
+      http-request use-service prometheus-exporter if { path /metrics }
+      stats enable
+      stats uri /stats
+      stats refresh 10s
 
     peers mypeers
       log stdout format raw local0 info
