@@ -18,4 +18,4 @@ spec:
     targetPort: 5347
   selector:
     k8s-app: prosody
-    shard: 0
+    shard: "0"

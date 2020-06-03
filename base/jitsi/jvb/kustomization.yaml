@@ -4,6 +4,5 @@ kind: Kustomization
 resources:
 - jvb-entrypoint-configmap.yaml
 - jvb-shutdown-configmap.yaml
-- jvb-pod-monitor.yaml
 - service-per-pod-decoratorcontroller.yaml
 - jvb-statefulset.yaml
