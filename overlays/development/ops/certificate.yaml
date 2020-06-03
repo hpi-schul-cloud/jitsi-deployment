@@ -4,7 +4,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: jitsi-messenger-schule
-  namespace: loadbalancer
+  namespace: jitsi
 spec:
   # Secret names are always required.
   secretName: jitsi-messenger-schule-tls

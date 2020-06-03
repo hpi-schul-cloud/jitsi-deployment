@@ -1,12 +1,20 @@
 bases:
   - ../jitsi-base
 
-resources:
-  - jitsi-namespace.yaml
-
 patchesStrategicMerge:
   - jvb-statefulset-patch.yaml
   - jvb-pod-monitor.yaml
   - prosody-pod-monitor.yaml
 
-namespace: jitsi-0
+namespace: jitsi
+
+namePrefix: shard-0-
+
+vars:
+  - name: PROSODY_SERVICE
+    objref:
+      kind: Service
+      name: shard-0-prosody
+      apiVersion: v1
+    fieldref:
+      fieldpath: metadata.name

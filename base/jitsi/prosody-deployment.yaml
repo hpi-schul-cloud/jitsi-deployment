@@ -4,6 +4,7 @@ metadata:
   namespace: jitsi
   labels:
     k8s-app: prosody
+    shard: 0
   name: prosody
 spec:
   replicas: 1
@@ -42,11 +43,11 @@ spec:
               cpu: 300m
           image: jitsi/prosody:stable-4548-1
           imagePullPolicy: Always
-          ports: 
+          ports:
             - name: metrics
               containerPort: 5280
           readinessProbe:
-            exec:              
+            exec:
               command:
                 - prosodyctl
                 - --config
