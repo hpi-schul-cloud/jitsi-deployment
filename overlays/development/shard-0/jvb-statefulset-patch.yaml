@@ -6,11 +6,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      k8s-app: shard-0-jvb
+      k8s-app: jvb
+      shard: "0"
   template:
     metadata:
       labels:
-        k8s-app: shard-0-jvb
+        k8s-app: jvb
+        shard: "0"
     spec:
       nodeSelector:
         topology.kubernetes.io/zone: ZONE_1
