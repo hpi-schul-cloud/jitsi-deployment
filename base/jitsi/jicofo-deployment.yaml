@@ -37,7 +37,7 @@ spec:
               port: 8888
           env:
             - name: XMPP_SERVER
-              value: prosody
+              value: $(PROSODY_SERVICE)
             - name: XMPP_DOMAIN
               value: meet.jitsi
             - name: XMPP_AUTH_DOMAIN

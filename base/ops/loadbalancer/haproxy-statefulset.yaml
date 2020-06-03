@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: haproxy
-  namespace: loadbalancer
+  namespace: jitsi
   labels:
     k8s-app: haproxy
 spec:
