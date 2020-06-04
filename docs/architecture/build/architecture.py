@@ -22,29 +22,42 @@ with Diagram(filename="jitsi_meet", direction='TB', show=False, outformat='png',
     all_users = Custom("all users", globe_img)
 
     with Cluster("Namespace 'jitsi'"):
+        n_shards = 2
+        n_haproxy = 2
+        haproxy_sts = StatefulSet("haproxy")
+        haproxy_pods = [Pod(f"haproxy-{j}") for j in range(n_haproxy)]
+        haproxy_sts >> haproxy_pods
+        web_service = Service("web")
         ingress = Ingress("jitsi.messenger.schule")
+        ingress >> Service("haproxy") >> haproxy_pods >> web_service
 
+        for k in range(n_shards):
+            with Cluster(f"Shard-{k}"):
+                web_pod = Pod(f"shard-{k}-web")
+                prosody_pod = Pod(f"shard-{k}-prosody")
+                jicofo_pod = Pod(f"shard-{k}-jicofo")
+                Deployment(f"shard-{k}-prosody") >> prosody_pod
+                Deployment(f"shard-{k}-jicofo") >> jicofo_pod
+                web_service >> web_pod
+                prosody_service = Service(f"shard-{k}-prosody")
+                prosody_service >> prosody_pod
+                prosody_service << web_pod
+                prosody_service << jicofo_pod
+
+                n_jvbs = 3
+                with Cluster(f"Jitsi Videobridge Shard-{k}"):
+                    jvb_pods = [Pod(f"shard-{k}-jvb-{i}") for i in range(n_jvbs)]
+                    jvb_services = [Service(f"shard-{k}-jvb-{i}") for i in range(n_jvbs)]
+                [jvb_services[i] >> jvb_pods[i] >> prosody_service for i in range(n_jvbs)]
+                jvb_pods << StatefulSet(f"shard-{k}-jvb") << HPA(f"shard-{k}-hpa")
+                if k == 0:
+                    users_1 >> jvb_services[0]
+                if k == 1:
+                    users_2 >> jvb_services[1]
         all_users >> ingress
 
-        web_pod = Pod("web")
-        prosody_pod = Pod("prosody")
-        jicofo_pod = Pod("jicofo")
-        Deployment("prosody") >> prosody_pod
-        Deployment("jicofo") >> jicofo_pod
-        Deployment("web") >> web_pod
-        ingress >> Service("web") >> web_pod
-        prosody_service = Service("prosody")
-        prosody_service >> prosody_pod
-        prosody_service << web_pod
-        prosody_service << jicofo_pod
 
-        n_jvbs = 3
-        with Cluster("Jitsi Videobridge"):
-            jvb_pods = [Pod(f"jvb-{i}") for i in range(n_jvbs)]
-            jvb_services = [Service(f"jvb-{i}") for i in range(n_jvbs)]
-        [jvb_services[i] >> jvb_pods[i] >> prosody_service for i in range(n_jvbs)]
-        jvb_pods << StatefulSet("jvb") << HPA("hpa")
 
-        users_1 >> jvb_services[0]
-        users_2 >> jvb_services[1]
+
+
 

@@ -11,16 +11,28 @@ Every directory in the directory tree (depicted below) contains a `kustomize.yam
 
 ```
 |-- base
-|   |-- cert-manager
-|   |-- dashboard
-|   |-- ingress-nginx
-|   |-- jitsi
+|   |--jitsi
 |   |   `-- jvb
-|   |-- metacontroller
-|   `-- monitoring
+|   |--ops
+|      |-- cert-manager
+|      |-- dashboard
+|      |-- ingress-nginx
+|      |-- loadbalancer
+|      |-- logging
+|      |-- metacontroller
+|      |-- monitoring
+|      `-- reflector
 `-- overlays
-    |-- development
-    `-- production
+       |-- development
+       |   |--jitsi-base
+       |   |--ops
+       |   |--shard-0
+       |   `--shard-1  
+       `-- production
+           |--jitsi-base
+           |--ops
+           |--shard-0
+           `--shard-1
 ```
 
 ## Requirements
@@ -36,8 +48,7 @@ To install the full setup go to either [`overlays/development`](overlays/develop
 ```bash
 $ kustomize build . | kubectl apply -f -
 ```
-
-The setup was tested against a managed Kubernetes cluster (v1.17.2) running on [IONOS Cloud](https://dcd.ionos.com/).
+It deploys a Jitsi setup consisting of two shards. You can add more shards following the documentation in [docs/architecture/architecture.md](docs/architecture/architecture.md). The setup was tested against a managed Kubernetes cluster (v1.17.2) running on [IONOS Cloud](https://dcd.ionos.com/).
 
 ## Architecture
 
