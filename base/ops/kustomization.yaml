@@ -11,3 +11,4 @@ resources:
 - ingress-nginx/
 - dashboard/
 - loadbalancer/
+- reflector/
