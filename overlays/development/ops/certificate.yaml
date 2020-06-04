@@ -5,6 +5,9 @@ kind: Certificate
 metadata:
   name: jitsi-messenger-schule
   namespace: jitsi
+  annotations: 
+    reflector.v1.k8s.emberstack.com/secret-reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/secret-reflection-allowed-namespaces: "monitoring"
 spec:
   # Secret names are always required.
   secretName: jitsi-messenger-schule-tls
