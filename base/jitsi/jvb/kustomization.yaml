@@ -6,3 +6,4 @@ resources:
 - jvb-shutdown-configmap.yaml
 - service-per-pod-decoratorcontroller.yaml
 - jvb-statefulset.yaml
+- jvb-hpa.yaml
