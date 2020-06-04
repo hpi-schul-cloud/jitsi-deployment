@@ -62,7 +62,7 @@ and is patched by each environment with different resource requests/limits.
 A [horizontal pod autoscaler](../../base/jitsi/jvb/jvb-hpa.yaml) governs the number of running videobridges based on
 the average value of the network traffic transmitted to/from the pods. It is also patched in the overlays to meet the requirements in the corresponding environments.
 
-To achieve the setup of an additional `NodePort` service on a dedicated port per videobridge-pod a
+To achieve the setup of an additional `NodePort` service on a dedicated port for every videobridge a
 [custom controller](https://metacontroller.app/api/decoratorcontroller/) is used.
 This [`service-per-pod` controller](../../base/metacontroller/service-per-pod-configmap.yaml) is triggered by the
 creation of a new videobridge pod and sets up the new service binding to a port defined by a base port (30300) plus the
@@ -106,6 +106,10 @@ The videobridge pods mentioned above have a sidecar container deployed that gath
 exposes them via a Rest endpoint. This endpoint is scraped by Prometheus based on the definition of a
 [PodMonitor](../../base/ops/monitoring/jvb-pod-monitor.yaml) available by the
 [Prometheus Operator](https://github.com/coreos/prometheus-operator#customresourcedefinitions). In folder `Default` of Grafana, you will find a dashboard for the current state of your Jitsi-installation.
+
+### Monitoring of other components
+
+Stats of Prosody (using an additional [add-on](https://modules.prosody.im/mod_prometheus.html)) and [HAProxy](https://www.haproxy.com/de/blog/haproxy-exposes-a-prometheus-metrics-endpoint/) are also gathered by Prometheus and can hence be used for monitoring.
 
 ## Adding additional shards
 
