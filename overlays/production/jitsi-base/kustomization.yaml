@@ -1,8 +1,6 @@
 bases:
   - ../../../base/jitsi
 
-resources:
-  - jvb-hpa.yaml
-
 patchesStrategicMerge:
   - jvb-statefulset-patch.yaml
+  - jvb-hpa-patch.yaml
