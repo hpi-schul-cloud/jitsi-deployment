@@ -1,12 +1,14 @@
 bases:
   - ../jitsi-base
 
-resources:
-  - jitsi-namespace.yaml
-
 patchesStrategicMerge:
+  - jvb-hpa-patch.yaml
   - jvb-statefulset-patch.yaml
-  - jvb-pod-monitor.yaml
-  - prosody-pod-monitor.yaml
+  - prosody-service-patch.yaml
+  - jicofo-deployment-patch.yaml
+  - web-deployment-patch.yaml
+  - prosody-deployment-patch.yaml
 
-namespace: jitsi-1
+namespace: jitsi
+
+namePrefix: shard-1-
