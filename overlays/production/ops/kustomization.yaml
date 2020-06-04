@@ -4,8 +4,8 @@ bases:
 resources:
   - bbb-endpoints.yaml
   - certificate.yaml
-  - certificate-monitoring.yaml
   - elasticsearch.yaml
+  - grafana-tls-secret.yaml
 
 patchesStrategicMerge:
   - grafana-deployment-patch.yaml

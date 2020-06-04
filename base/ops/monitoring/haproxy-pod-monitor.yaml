@@ -1,15 +1,15 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: jvb-pod-monitor
+  name: haproxy-pod-monitor
   namespace: jitsi
 spec:
   selector:
     matchLabels:
-      k8s-app: jvb
+      k8s-app: haproxy
   namespaceSelector:
     any: false
     matchNames:
-      - jitsi-1
+      - jitsi
   podMetricsEndpoints:
     - port: metrics

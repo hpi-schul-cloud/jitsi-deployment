@@ -6,10 +6,7 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: StatefulSet
-    name: jvb
-  minReplicas: 1
-  maxReplicas: 2
+    kind: Statefulset
   metrics:
     - type: Pods
       pods:
@@ -17,5 +14,4 @@ spec:
           name: container_network_transmit_bytes_per_second
         target:
           type: AverageValue
-          averageValue: 400000
 

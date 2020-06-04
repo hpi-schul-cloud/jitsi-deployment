@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  namespace: loadbalancer
+  namespace: jitsi
   name: haproxy-config
 data:
   haproxy.cfg: |
@@ -20,12 +20,25 @@ data:
       timeout client    50s
       timeout server    50s
 
+    resolvers kube-dns
+      parse-resolv-conf
+      hold valid 10s
+
     frontend http_in
       bind *:80
       mode http
       option forwardfor
       option http-keep-alive
       default_backend jitsi-meet
+    
+    frontend stats
+      mode http
+      bind *:9090
+      option http-use-htx
+      http-request use-service prometheus-exporter if { path /metrics }
+      stats enable
+      stats uri /stats
+      stats refresh 10s
 
     peers mypeers
       log stdout format raw local0 info
@@ -41,5 +54,4 @@ data:
       acl room_found urlp(room) -m found
       stick-table type string len 128 size 2k expire 1d peers mypeers
       stick on hdr(Room) if room_found
-      server shard-0 web.jitsi-0.svc.cluster.local:80
-      server shard-1 web.jitsi-1.svc.cluster.local:80
+      server-template shard 0-5 _http._tcp.web.jitsi.svc.cluster.local:80 check resolvers kube-dns init-addr none

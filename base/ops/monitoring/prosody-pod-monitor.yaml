@@ -10,4 +10,6 @@ spec:
   namespaceSelector:
     any: false
     matchNames:
-      - jitsi-0
+      - jitsi
+  podMetricsEndpoints:
+    - port: metrics

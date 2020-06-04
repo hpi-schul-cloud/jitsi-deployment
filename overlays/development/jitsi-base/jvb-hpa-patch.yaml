@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: jitsi
+  name: jvb-hpa
+spec:
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+      pods:
+        target:
+          averageValue: 400000
+
