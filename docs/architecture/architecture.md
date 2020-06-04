@@ -26,7 +26,7 @@ This can be solved by scaling to multiple shards and we will explain this [below
 
 ### Shards
 
-We allow the setup of several shards. We encounter the following difficulties in that case:
+We allow the setup of several shards, where we encounter the following difficulties in that case:
 
 * We need to loadbalance the traffic between the two shards.
 * We have to remember on which shard the conferences were allocated, so that participants joining an existing conference later on are routed to the shard, where the conference takes place.
@@ -46,10 +46,10 @@ Making use of the Kubernetes framework the setup looks as follows:
 
 ![Architecture Jitsi Meet](build/jitsi_meet.png)
 
-The entrypoint for every user is the ingress that is defined in [jitsi-ingress.yaml](../../base/loadbalancer/haproxy-ingress.yaml)
+The entrypoint for every user is the ingress that is defined in [haproxy-ingress.yaml](../../base/ops/loadbalancer/haproxy-ingress.yaml)
 and patched for each environment by [haproxy-ingress-patch.yaml](../../overlays/production/ops/haproxy-ingress-patch.yaml).
 At this point SSL is terminated and traffic is forwarded via HAProxy to the [`web` service](../../base/jitsi/web-service.yaml) in plaintext (port 80)
-which in turn exposes the web frontend inside the cluster.
+which in turn exposes a web frontend inside the cluster.
 
 The other containers [jicofo](../../base/jitsi/jicofo-deployment.yaml), [web](../../base/jitsi/web-deployment.yaml) and [prosody](../../base/jitsi/prosody-deployment.yaml), which are necessary for setting up conferences, are each running in a rolling deployment.
 
