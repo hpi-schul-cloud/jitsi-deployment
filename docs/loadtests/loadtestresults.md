@@ -1,4 +1,4 @@
-Below, we share the results of our load tests run in [IONOS Cloud](https://dcd.ionos.com/). <br/>
+Below, we share the results of our load tests run in [IONOS Cloud](https://dcd.ionos.com/), which took place with a Jitsi single-shard-setup. <br/>
 The loadtest test server configuration for both cases was set to 16 Cores Intel, 16 GB RAM, 8 server. All simulated participants did send a high-quality video-stream (1280x720 pixels, 60 frames per second)  and sound. There are two different test cases we investigated:
 
 ## 1 One big conference
