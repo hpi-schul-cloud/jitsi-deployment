@@ -25,6 +25,7 @@ This can be solved by scaling to multiple shards and we will explain this [below
 ](https://www.youtube.com/watch?v=Jj8a6ZRgehI).
 
 ### Shards
+
 We allow the setup of several shards. We encounter the following difficulties in that case:
 
 * We need to loadbalance the traffic between the two shards.
@@ -74,6 +75,7 @@ of type `ClusterIP`.
 ## Monitoring
 
 The monitoring stack is comprised of a [kube-prometheus](https://github.com/coreos/kube-prometheus) setup that integrates
+
 * [Prometheus Operator](https://github.com/coreos/prometheus-operator)
 * Highly available [Prometheus](https://prometheus.io/)
 * Highly available [Alertmanager](https://github.com/prometheus/alertmanager)
@@ -107,8 +109,7 @@ exposes them via a Rest endpoint. This endpoint is scraped by Prometheus based o
 
 ## Adding additional shards
 
-In order to add an additional shard, follow these steps: 
-
+In order to add an additional shard, follow these steps:
 
 1. In the environment of your choice copy the folder [shard-0](../../overlays/production/shard-0) in the same [folder](../../overlays/production/) and change its name to e.g. `shard-2`.
 2. In all those `.yamls`, change every occurence of `shard-0` to `shard-2`, even if `shard-0` can only be found as a substring.
