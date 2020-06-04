@@ -3,8 +3,9 @@
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.custom import Custom
-from diagrams.k8s.compute import StatefulSet, Pod
-from diagrams.k8s.network import Ingress, Service
+from diagrams.k8s.compute import Pod
+from diagrams.k8s.network import Ingress
+
 globe_img = "resources/globe.png"
 jitsi_img = "resources/jitsi-logo-square.png"
 
@@ -24,10 +25,7 @@ with Diagram(filename="jitsi_sharding", direction='TB', show=False, outformat='p
         ingress = Ingress("jitsi.messenger.schule")
         with Cluster("HAProxy"):
             n_haproxy = 2
-            haproxy_services = [Service(f"haproxy-{i}") for i in range(n_haproxy)]
             haproxy_pods = [Pod(f"haproxy-{i}") for i in range(n_haproxy)]
-            haproxy_pods[0] >> haproxy_services[1] >> haproxy_pods[1]
-            haproxy_pods[1] >> haproxy_services[0] >> haproxy_pods[0]
 
         edge_conference_1 = Edge(color="red")
         edge_conference_2 = Edge(color="green")
@@ -38,7 +36,9 @@ with Diagram(filename="jitsi_sharding", direction='TB', show=False, outformat='p
 
         for haproxy in haproxy_pods:
             ingress >> haproxy
-            haproxy >> edge_conference_1 >> shard_0
-            haproxy >> edge_conference_1 >> shard_0
-            haproxy >> edge_conference_2 >> shard_1
-            haproxy >> edge_conference_2 >> shard_1
+
+        for i in range(len(users_1)):
+            haproxy_pods[i % len(haproxy_pods)] >> edge_conference_1 >> shard_0
+
+        for i in range(len(users_2)):
+            haproxy_pods[i % len(haproxy_pods)] >> edge_conference_2 >> shard_1
