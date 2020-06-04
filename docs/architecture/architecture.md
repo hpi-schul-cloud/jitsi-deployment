@@ -4,7 +4,7 @@
 
 ### Components
 
-A Jitsi Meet installation (holding one shard) consists of the following different components:
+A Jitsi Meet installation (holding one "shard", term explained below) consists of the following different components:
 
 1. `web` This container represents the web frontend and is the entrypoint for each user.
 2. `jicofo` This component is responsible for managing media sessions between each of the participants and the videobridge.
@@ -35,7 +35,7 @@ To achieve this, we use the following setup:
 
 Each of the shards have the structure described in the chapter [Components](##Components)
 
-HAProxy is the central component here, as it allows the usage of [stick tables](https://www.haproxy.com/de/blog/introduction-to-haproxy-stick-tables/). We use [them](../../base/ops/loadbalancer/haproxy-configmap.yaml) to save the information, on which shard the conferences take place. HAProxy reads the value of the URL parameter `room` in order to decide, if there is already a conference, this participant wants to join (and hence leading her to the correct shard) or if it is a conference which is not known yet and simple round-robin-loadbalancing between the shards is applied. In the latter case, HAProxy remembers this additional conference and routes all incoming participants of this conference to the correct shard. HAProxy uses DNS service detection for finding the existing shards. The configuration can be found at [haproxy-configmap.yaml](../../base/ops/loadbalancer/haproxy-configmap.yaml). To decrease the risk of failure, we are using a StatefulSet consisting of two HAProxy pods. They are sharing the information on the existing conferences using Kubernetes Services and HAProxy's peering functionality.  
+HAProxy is the central component here, as it allows the usage of [stick tables](https://www.haproxy.com/de/blog/introduction-to-haproxy-stick-tables/). We use [them](../../base/ops/loadbalancer/haproxy-configmap.yaml) to save the information, on which shard the conferences take place. HAProxy reads the value of the URL parameter `room` in order to decide, if the conference this participant wants to join already exists (and hence leading her to the correct shard) or if it is a conference which is not known yet in which case simple round-robin-loadbalancing between the shards is applied. In the latter case, HAProxy remembers this new conference and routes all arriving participants of this conference to the correct shard. HAProxy uses DNS service detection for finding the existing shards. The configuration can be found at [haproxy-configmap.yaml](../../base/ops/loadbalancer/haproxy-configmap.yaml). To decrease the risk of failure, we are using a StatefulSet consisting of two HAProxy pods. They are sharing the information on the existing conferences using Kubernetes Services and HAProxy's peering functionality.  
 
 By default, we are using two shards. [Below](##Adding-additional-shards), we will describe on how to add more of them.
 
@@ -48,7 +48,7 @@ Making use of the Kubernetes framework the setup looks as follows:
 The entrypoint for every user is the ingress that is defined in [jitsi-ingress.yaml](../../base/loadbalancer/haproxy-ingress.yaml)
 and patched for each environment by [haproxy-ingress-patch.yaml](../../overlays/production/ops/haproxy-ingress-patch.yaml).
 At this point SSL is terminated and traffic is forwarded via HAProxy to the [`web` service](../../base/jitsi/web-service.yaml) in plaintext (port 80)
-which in turn exposes the web frontend inside the cluster. 
+which in turn exposes the web frontend inside the cluster.
 
 The other containers [jicofo](../../base/jitsi/jicofo-deployment.yaml), [web](../../base/jitsi/web-deployment.yaml) and [prosody](../../base/jitsi/prosody-deployment.yaml), which are necessary for setting up conferences, are each running in a rolling deployment.
 
@@ -59,9 +59,9 @@ for each videobridge (on a different port).
 The videobridges are managed by a [stateful set](../../base/jitsi/jvb/jvb-statefulset.yaml) (to get predictable pod names)
 and is patched by each environment with different resource requests/limits.
 A [horizontal pod autoscaler](../../base/jitsi/jvb/jvb-hpa.yaml) governs the number of running videobridges based on
-the average value of the network traffic transmitted to/from the pods. A minimum of 2 videobridge pods are always running.
+the average value of the network traffic transmitted to/from the pods. It is also patched in the overlays to meet the requirements in the corresponding environments.
 
-To achieve the setup of an additional `NodePort` service on a dedicated port per pod in the videobridge stateful set a
+To achieve the setup of an additional `NodePort` service on a dedicated port per videobridge-pod a
 [custom controller](https://metacontroller.app/api/decoratorcontroller/) is used.
 This [`service-per-pod` controller](../../base/metacontroller/service-per-pod-configmap.yaml) is triggered by the
 creation of a new videobridge pod and sets up the new service binding to a port defined by a base port (30300) plus the
@@ -84,10 +84,10 @@ The monitoring stack is comprised of a [kube-prometheus](https://github.com/core
 
 This stack is adapted and patched to fit the needs of the Jitsi Meet setup.
 
-The [deployment patch for Grafana](../../base/monitoring/grafana-deployment-patch.yaml) adds a permanent storage to retain
+The [deployment patch for Grafana](../../base/ops/monitoring/grafana-deployment-patch.yaml) adds a permanent storage to retain
 users and changes made in the dashboards. In addition, Grafana is configured to serve from the subpath `/grafana`.
-An [ingress](../../base/monitoring/grafana-ingress.yaml) is defined to route traffic to the Grafana instance.
-Again, SSL is terminated at the ingress. 
+An [ingress](../../base/ops/monitoring/grafana-ingress.yaml) is defined to route traffic to the Grafana instance.
+Again, SSL is terminated at the ingress. In order to copy the Kubernetes Secret containing the certificate for your domain from namespace `jitsi` to the `monitoring` namespace, the [kubernetes-reflector](https://github.com/emberstack/kubernetes-reflector) is used.
 
 A role and a role binding to let Prometheus monitor the `jitsi` namespace is defined in
 [prometheus-roleBindingSpecificNamespaces.yaml](../../base/ops/monitoring/prometheus-roleBindingSpecificNamespaces.yaml) and
