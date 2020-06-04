@@ -9,3 +9,5 @@ resources:
 
 patchesStrategicMerge:
 - fluentd-daemonset-patch.yaml
+
+namespace: logging

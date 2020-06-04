@@ -26,5 +26,3 @@ spec:
                 secretKeyRef:
                   name: elasticsearch-es-elastic-user
                   key: elastic
-# elasticsearch secrect must be copied to kube-system namespace:
-# kubectl get secret elasticsearch-es-elastic-user --namespace=logging --export -o yaml | kubectl apply --namespace=kube-system -f -
