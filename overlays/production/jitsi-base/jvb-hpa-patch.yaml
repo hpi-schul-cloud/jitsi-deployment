@@ -14,5 +14,3 @@ spec:
         target:
           type: AverageValue
           averageValue: 100000
-
-
