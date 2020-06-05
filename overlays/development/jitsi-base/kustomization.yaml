@@ -1,5 +1,5 @@
 bases:
-  - ../../../base/jitsi
+  - ../../../base/jitsi-shard
 
 patchesStrategicMerge:
   - jvb-statefulset-patch.yaml

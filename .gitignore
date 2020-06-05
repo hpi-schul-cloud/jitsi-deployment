@@ -1,4 +1,4 @@
-base/jitsi/jitsi-secret.yaml.bak
+base/jitsi-shard/jitsi-secret.yaml.bak
 
 loadtest/terraform.tfstate.backup
 loadtest/terraform.tfstate

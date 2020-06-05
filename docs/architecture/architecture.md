@@ -48,28 +48,28 @@ Making use of the Kubernetes framework the setup looks as follows:
 
 The entrypoint for every user is the ingress that is defined in [haproxy-ingress.yaml](../../base/ops/loadbalancer/haproxy-ingress.yaml)
 and patched for each environment by [haproxy-ingress-patch.yaml](../../overlays/production/ops/haproxy-ingress-patch.yaml).
-At this point SSL is terminated and traffic is forwarded via HAProxy to the [`web` service](../../base/jitsi/web-service.yaml) in plaintext (port 80)
+At this point SSL is terminated and traffic is forwarded via HAProxy to the [`web` service](../../base/jitsi-shard/web-service.yaml) in plaintext (port 80)
 which in turn exposes a web frontend inside the cluster.
 
-The other containers [jicofo](../../base/jitsi/jicofo-deployment.yaml), [web](../../base/jitsi/web-deployment.yaml) and [prosody](../../base/jitsi/prosody-deployment.yaml), which are necessary for setting up conferences, are each running in a rolling deployment.
+The other containers [jicofo](../../base/jitsi-shard/jicofo-deployment.yaml), [web](../../base/jitsi-shard/web-deployment.yaml) and [prosody](../../base/jitsi-shard/prosody-deployment.yaml), which are necessary for setting up conferences, are each running in a rolling deployment.
 
 When a user starts a conference it is assigned to a videobridge. The video streaming happens directly between the user
 and this videobridge. Therefore the videobridges need to be open to the internet. This happens with a service of type `NodePort`
 for each videobridge (on a different port).
 
-The videobridges are managed by a [stateful set](../../base/jitsi/jvb/jvb-statefulset.yaml) (to get predictable pod names)
+The videobridges are managed by a [stateful set](../../base/jitsi-shard/jvb/jvb-statefulset.yaml) (to get predictable pod names)
 and is patched by each environment with different resource requests/limits.
-A [horizontal pod autoscaler](../../base/jitsi/jvb/jvb-hpa.yaml) governs the number of running videobridges based on
+A [horizontal pod autoscaler](../../base/jitsi-shard/jvb/jvb-hpa.yaml) governs the number of running videobridges based on
 the average value of the network traffic transmitted to/from the pods. It is also patched in the overlays to meet the requirements in the corresponding environments.
 
 To achieve the setup of an additional `NodePort` service on a dedicated port for every videobridge a
 [custom controller](https://metacontroller.app/api/decoratorcontroller/) is used.
 This [`service-per-pod` controller](../../base/metacontroller/service-per-pod-configmap.yaml) is triggered by the
 creation of a new videobridge pod and sets up the new service binding to a port defined by a base port (30300) plus the
-number of the videobridge pod (e.g. 30301 for pod `jvb-1`). A [startup script](../../base/jitsi/jvb/jvb-entrypoint-configmap.yaml)
+number of the videobridge pod (e.g. 30301 for pod `jvb-1`). A [startup script](../../base/jitsi-shard/jvb/jvb-entrypoint-configmap.yaml)
 handles the configuration of the port in use by videobridge. When multiple shards exist, we use the ports 304xx (for the second shard), 305xx (for the third shard) and so on for the videobridges of the additional shards. That means, you can use 100 JVBs per shard at most, which should be sufficient.
 
-In addition, all videobridges communicate with the `prosody` server via a [service](../../base/jitsi/prosody-service.yaml)
+In addition, all videobridges communicate with the `prosody` server via a [service](../../base/jitsi-shard/prosody-service.yaml)
 of type `ClusterIP`.
 
 ## Monitoring
