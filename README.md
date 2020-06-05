@@ -54,7 +54,7 @@ It deploys a Jitsi setup consisting of two shards. You can add more shards follo
 
 The Jitsi Kubernetes namespace has the following architecture:
 
-![Architecture Jitsi Meet](docs/architecture/build/jitsi_meet.png)
+![Architecture Jitsi Meet](docs/architecture/build/jitsi_meet_one_shard.png)
 
 A more detailed explanation of the system architecure can be found in [docs/architecture/architecture.md](docs/architecture/architecture.md).
 
