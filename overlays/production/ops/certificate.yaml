@@ -6,6 +6,7 @@ metadata:
   name: jitsi-messenger-schule
   namespace: jitsi
   annotations: 
+    # Allows the copy of the resulting secret to namespace `monitoring`.
     reflector.v1.k8s.emberstack.com/secret-reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/secret-reflection-allowed-namespaces: "monitoring"
 spec:

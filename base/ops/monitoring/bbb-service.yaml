@@ -1,3 +1,4 @@
+# Scrape stats of BBB. Endpoints are defined in overlays. 
 kind: Service
 apiVersion: v1
 metadata:

@@ -1,3 +1,5 @@
+# Expose metrics collected by Prometheus to the metric server. Then those metrics can be used by
+# HorizontalPodAutoscalers (e.g. for autoscaling JVBs)
 apiVersion: v1
 kind: ConfigMap
 metadata:

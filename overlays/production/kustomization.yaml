@@ -6,5 +6,7 @@ resources:
   - shard-0/
   - shard-1/
 
+# CommonLabels not only add labels
+# but also add those to the selectors of the services involved.
 commonLabels:
   stage: prod

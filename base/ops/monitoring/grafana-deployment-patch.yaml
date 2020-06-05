@@ -20,10 +20,12 @@ spec:
       containers:
         - name: grafana
           env:
+            # Define Grafana that it serves from JITSI_DOMAIN/grafana
             - name: GF_SERVER_ROOT_URL
               value: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
             - name: GF_SERVER_SERVE_FROM_SUB_PATH
               value: "true"
+          # Mount Jitsi Grafana dashboard, such that it is available after first start of pod.
           volumeMounts:
             - name: grafana-dashboard-jitsi
               mountPath: /grafana-dashboard-definitions/0/jitsi

@@ -1,15 +1,19 @@
-Below, we share the results of our load tests run in [IONOS Cloud](https://dcd.ionos.com/), which took place with a Jitsi single-shard-setup. <br/>
+# Loadtest results
+
+Below, we share the results of our load tests run in [IONOS Cloud](https://dcd.ionos.com/), which took place with a Jitsi single-shard-setup.  
 The loadtest test server configuration for both cases was set to 16 Cores Intel, 16 GB RAM, 8 server. All simulated participants did send a high-quality video-stream (1280x720 pixels, 60 frames per second)  and sound. There are two different test cases we investigated:
 
 ## 1 One big conference
+
 All test servers are connecting to one conference. This was achieved by a slight variation of [run_loadtest.sh](loadtest/run_loadtest.sh).
 We have tested two different setups for the limits and request of the JVB pods:
 
 ### 1.1 CPU limit is 4 cores, Memory limit is 1 GB
 
-We have further varied the number channelLastN in web-configmap.yaml. It decides how many video streams are forwarded to every conference participant, where only the video of the most active N users are used. 
+We have further varied the number channelLastN in web-configmap.yaml. It decides how many video streams are forwarded to every conference participant, where only the video of the most active N users are used.
 
 #### 1.1.1 ChannelLastN not set
+
 Here are the results for channelLastN not set, that means all videos are streamed to all participants:
 
 <table>

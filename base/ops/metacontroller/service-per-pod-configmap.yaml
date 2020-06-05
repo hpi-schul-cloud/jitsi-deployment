@@ -1,3 +1,7 @@
+# This ConfigMap defines the automation of creating NodePorts for every emerging JVB-pod.
+# It reads the args if the name of the container is 'jvb' and chooses as base
+# port the arg of length 5, which is starting with a "3". Then adds for every of those JVBs a 
+# NodePort service, to expose the JVB to the internet.
 kind: ConfigMap
 apiVersion: v1
 metadata:

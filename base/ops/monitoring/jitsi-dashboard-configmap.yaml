@@ -1,3 +1,6 @@
+# Grafana Jitsi Dashboard
+# Is mounted in grafana-deployment-patch.yaml such that it can be found in folder
+# "Default" of Grafana. Uses metrics scraped by ./jvb-pod-monitor.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

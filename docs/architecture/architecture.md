@@ -120,7 +120,7 @@ exposes them via a Rest endpoint. This endpoint is scraped by Prometheus based o
 
 ### Monitoring of other components
 
-Stats of Prosody (using an additional [add-on](https://modules.prosody.im/mod_prometheus.html)) and [HAProxy](https://www.haproxy.com/de/blog/haproxy-exposes-a-prometheus-metrics-endpoint/) are also gathered by Prometheus and can hence be used for monitoring.
+Stats of Prosody (using an additional [add-on](https://modules.prosody.im/mod_prometheus.html) in a [configmap](../../base/jitsi-shard/prosody-configmap.yaml)) and [HAProxy](https://www.haproxy.com/de/blog/haproxy-exposes-a-prometheus-metrics-endpoint/) are also gathered by Prometheus and can hence be used for monitoring. Similar to the videobridges, PodMonitors are defined for them.
 
 ## Adding additional shards
 

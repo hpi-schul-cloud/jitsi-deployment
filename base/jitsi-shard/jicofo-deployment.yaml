@@ -31,6 +31,9 @@ spec:
               cpu: 400m
           image: jitsi/jicofo:stable-4548-1
           imagePullPolicy: Always
+          # Caution: this readinessProbe tries to create
+          # a new conference and hence also fails if
+          # dependencies (jvb, prosody) are not available.
           readinessProbe:
             httpGet:
               path: /about/health

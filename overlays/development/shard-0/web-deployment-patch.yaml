@@ -6,6 +6,7 @@ metadata:
     k8s-app: web
   name: web
 spec:
+  # Avoid that Pods of different shards share zone:
   template:
     spec:
       affinity:

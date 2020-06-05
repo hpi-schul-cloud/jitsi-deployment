@@ -29,6 +29,8 @@ spec:
             name: jvb-shutdown
             defaultMode: 0744
       terminationGracePeriodSeconds: 2147483647
+      # Add sidecar container that exports stats for prometheus. Values are scraped by 
+      # ../ops/monitoring/jvb-pod-monitor.yaml
       containers:
         - name: prometheus-exporter
           image: systemli/prometheus-jitsi-meet-exporter:1.1.1

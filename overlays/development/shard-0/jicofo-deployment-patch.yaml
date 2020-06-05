@@ -8,6 +8,7 @@ metadata:
 spec:
   template:
     spec:
+      # Avoid that Pods of different shards share zone:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

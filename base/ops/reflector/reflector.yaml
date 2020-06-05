@@ -1,4 +1,7 @@
 # Taken from https://github.com/emberstack/kubernetes-reflector/releases/download/v5.0.10/reflector.yaml
+# The certificate defined in namespace `jitsi` results in a secret in namespace `jitsi`. 
+# The reflector allows the labeling of the resulting secret. This label is used by the reflector to
+# copy this secret to namespace `monitoring`, where it used by the grafana-ingress.
 ---
 # Source: reflector/templates/serviceaccount.yaml
 apiVersion: v1
