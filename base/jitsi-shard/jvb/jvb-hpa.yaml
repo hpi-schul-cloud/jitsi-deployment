@@ -8,10 +8,3 @@ spec:
     apiVersion: apps/v1
     kind: Statefulset
   metrics:
-    - type: Pods
-      pods:
-        metric:
-          name: container_network_transmit_bytes_per_second
-        target:
-          type: AverageValue
-

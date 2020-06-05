@@ -7,7 +7,12 @@ spec:
   minReplicas: 2
   maxReplicas: 6
   metrics:
+    - type: Pods
       pods:
+        metric:
+          name: container_network_transmit_bytes_per_second
         target:
+          type: AverageValue
           averageValue: 100000
+
 
