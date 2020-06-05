@@ -4,7 +4,6 @@ bases:
 patchesStrategicMerge:
   - jvb-hpa-patch.yaml
   - jvb-statefulset-patch.yaml
-  - prosody-service-patch.yaml
   - jicofo-deployment-patch.yaml
   - web-deployment-patch.yaml
   - prosody-deployment-patch.yaml
