@@ -8,6 +8,16 @@ metadata:
 spec:
   template:
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: shard
+                operator: In
+                values: 
+                - "1"
+            topologyKey: "topology.kubernetes.io/zone"
       containers:
         - name: jicofo
           env:

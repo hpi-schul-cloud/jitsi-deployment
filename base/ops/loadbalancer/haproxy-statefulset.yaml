@@ -16,6 +16,16 @@ spec:
       labels:
         k8s-app: haproxy
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values: 
+                - haproxy
+            topologyKey: "topology.kubernetes.io/zone"
       volumes:
         - name: haproxy-config
           configMap:
@@ -50,3 +60,4 @@ spec:
           - mountPath: /usr/local/etc/haproxy/haproxy.cfg
             name: haproxy-config
             subPath: haproxy.cfg
+        

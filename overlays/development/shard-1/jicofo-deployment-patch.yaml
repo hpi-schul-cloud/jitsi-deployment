@@ -6,8 +6,19 @@ metadata:
     k8s-app: jicofo
   name: jicofo
 spec:
+
   template:
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: shard
+                operator: In
+                values: 
+                - "0"
+            topologyKey: "topology.kubernetes.io/zone"
       containers:
         - name: jicofo
           env:
