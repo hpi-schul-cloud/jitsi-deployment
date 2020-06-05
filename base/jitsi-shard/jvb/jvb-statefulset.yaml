@@ -101,13 +101,3 @@ spec:
               value: jvbbrewery
             - name: TZ
               value: Europe/Berlin
-  volumeClaimTemplates:
-    - metadata:
-        name: jvb
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: ionos-enterprise-hdd
-        resources:
-          requests:
-            storage: 1Gi
-
