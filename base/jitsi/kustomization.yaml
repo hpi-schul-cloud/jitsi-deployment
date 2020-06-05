@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
 - jitsi-namespace.yaml
 - web-service.yaml
+
+commonLabels:
+  scope: jitsi

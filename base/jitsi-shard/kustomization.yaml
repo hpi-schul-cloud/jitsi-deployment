@@ -10,3 +10,6 @@ resources:
 - web-configmap.yaml
 - prosody-service.yaml
 - jvb/
+
+commonLabels:
+  scope: jitsi

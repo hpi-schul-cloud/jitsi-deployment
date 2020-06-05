@@ -12,3 +12,6 @@ patchesStrategicMerge:
 namespace: jitsi
 
 namePrefix: shard-1-
+
+commonLabels:
+  shard: "1"
