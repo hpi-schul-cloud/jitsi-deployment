@@ -1,3 +1,10 @@
+# This ConfigMaps defines the configuration of HAProxy. It enables 
+# 1. sticky tables using URL parameter room for loadbalancing (backend jitsi-meet)
+# 2. DNS resolving of web containers for all shards (resolvers kube-dns)
+# 3. peering between the HAProxy instances using the environment variables
+#    exported at start of container (see command of haproxy pod) (peers mypeers)
+# 4. exporting of metrics usable by Prometheus and reachable stats frontend on port 9090
+#    (frontend stats)
 kind: ConfigMap
 apiVersion: v1
 metadata:
