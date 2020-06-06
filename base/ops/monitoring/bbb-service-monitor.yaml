@@ -11,8 +11,18 @@ spec:
     any: false
     matchNames:
       - monitoring
-  endpoints:
-    - port: metrics
-      path: /metrics
-      interval: 10s
-      honorLabels: true
+  endpoints:  
+  - basicAuth:
+      password:
+        name: bbb-basic-auth
+        key: password
+      username:
+        name: bbb-basic-auth
+        key: username
+    path: /metrics
+    interval: 10s
+    honorLabels: true
+    port: metrics
+    scheme: https 
+    tlsConfig:
+      insecureSkipVerify: true
