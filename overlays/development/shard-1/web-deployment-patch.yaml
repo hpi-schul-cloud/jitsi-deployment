@@ -9,16 +9,8 @@ spec:
   template:
     spec:
       # avoid that pods of different shards share zone
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: shard
-                operator: In
-                values:
-                - "0"
-            topologyKey: "topology.kubernetes.io/zone"
+      nodeSelector:
+        topology.kubernetes.io/zone: ZONE_2
       containers:
         - name: web
           env:
