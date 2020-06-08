@@ -6,6 +6,6 @@ metadata:
 spec:
   tls:
   - hosts:
-    # Fill in host here:
+    # fill in host here
     - jitsi.domainname
     secretName: jitsi-messenger-schule-tls

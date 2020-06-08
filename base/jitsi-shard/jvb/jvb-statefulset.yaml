@@ -5,6 +5,7 @@ metadata:
   labels:
     k8s-app: jvb
   name: jvb
+  # needed for metacontroller to create/delete service per pod
   annotations:
     service-per-pod-label: "statefulset.kubernetes.io/pod-name"
 spec:
@@ -13,6 +14,7 @@ spec:
     matchLabels:
       k8s-app: jvb
   serviceName: jvb
+  # relax ordering guarantees because not needed (any JVB pod can be stopped or started at any time)
   podManagementPolicy: Parallel
   template:
     metadata:
@@ -23,16 +25,17 @@ spec:
         - name: jvb-entrypoint
           configMap:
             name: jvb-entrypoint
-            defaultMode: 0744
+            defaultMode: 0744 # make executable
         - name: jvb-shutdown
           configMap:
             name: jvb-shutdown
-            defaultMode: 0744
+            defaultMode: 0744 # make executable
+      # in case there is a long running conference on a JVB that should be shut down, give it time to finish
       terminationGracePeriodSeconds: 2147483647
-      # Add sidecar container that exports stats for prometheus. Values are scraped by 
-      # ../ops/monitoring/jvb-pod-monitor.yaml
       containers:
         - name: prometheus-exporter
+          # sidecar container that exports stats for prometheus
+          # values are scraped by ../ops/monitoring/jvb-pod-monitor.yaml
           image: systemli/prometheus-jitsi-meet-exporter:1.1.1
           imagePullPolicy: Always
           ports:

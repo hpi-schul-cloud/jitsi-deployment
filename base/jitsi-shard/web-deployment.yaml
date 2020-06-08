@@ -6,7 +6,7 @@ metadata:
     k8s-app: web
   name: web
 spec:
-  replicas: 1
+  replicas: 1 # one web instance per shard
   strategy:
     type: RollingUpdate
     rollingUpdate:

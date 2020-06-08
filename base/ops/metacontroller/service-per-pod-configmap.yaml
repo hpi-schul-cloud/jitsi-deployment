@@ -1,7 +1,4 @@
-# This ConfigMap defines the automation of creating NodePorts for every emerging JVB-pod.
-# It reads the args if the name of the container is 'jvb' and chooses as base
-# port the arg of length 5, which is starting with a "3". Then adds for every of those JVBs a 
-# NodePort service, to expose the JVB to the internet.
+# This ConfigMap defines the automation of creating NodePorts for every emerging JVB pod to expose it to the internet.
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -39,7 +36,7 @@ data:
                            ][0].args
                            if std.startsWith(a, '3') && std.length(a) == 5][0]),
 
-      // Create a service for each Pod, with a selector on the given label key.
+      // create a service for each pod, with a selector on the given label key
       attachments: [
         {
           apiVersion: "v1",

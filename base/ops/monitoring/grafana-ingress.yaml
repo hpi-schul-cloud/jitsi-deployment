@@ -4,5 +4,5 @@ metadata:
   name: grafana-ingress
   namespace: monitoring
   annotations:
-    # Important to allow serving from subpath, see patches for details:
+    # necessary to create more complex ingress rules
     nginx.ingress.kubernetes.io/use-regex: "true"

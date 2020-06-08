@@ -1,4 +1,5 @@
-# Scrape stats of BBB. Endpoints are defined in overlays. 
+# used to scrape statistics of affiliated BigBlueButton project
+# BBB endpoints are defined in overlays
 kind: Service
 apiVersion: v1
 metadata:

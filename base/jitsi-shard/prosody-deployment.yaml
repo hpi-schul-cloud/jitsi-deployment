@@ -6,7 +6,7 @@ metadata:
     k8s-app: prosody
   name: prosody
 spec:
-  replicas: 1
+  replicas: 1 # one prosody instance per shard
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -48,6 +48,7 @@ spec:
             - name: metrics
               containerPort: 5280
           readinessProbe:
+            ## the command that is called obeys standard exit codes
             exec:
               command:
                 - prosodyctl
@@ -55,8 +56,8 @@ spec:
                 - /config/prosody.cfg.lua
                 - status
           volumeMounts:
-          # Add-ons that allow exporting of metrics to prometheus (mod_prometheus.lua)
-          # or enrich the available stats (mod_measure_stanza_counts.lua, 
+          # add-ons that allow exporting of metrics to prometheus (mod_prometheus.lua)
+          # or enrich the available stats (mod_measure_stanza_counts.lua,
           # mod_measure_client_presence.lua)
           - name: prosody
             mountPath: /prosody-plugins-custom/mod_prometheus.lua
@@ -99,9 +100,9 @@ spec:
               value: Europe/Berlin
             - name: JVB_TCP_HARVESTER_DISABLED
               value: "true"
-            # Add add-ons that enrich the available stats of prosody
+            # activate add-ons that enrich the available stats of prosody
             - name: GLOBAL_MODULES
               value: prometheus,measure_stanza_counts,measure_client_presence
-            # Config to allow the exporting of metrics in prometheus format by prometheus-add-on.
+            # config to allow exporting metrics in prometheus format by prometheus add-on
             - name: GLOBAL_CONFIG
               value: statistics = "internal";\nstatistics_interval = 15;

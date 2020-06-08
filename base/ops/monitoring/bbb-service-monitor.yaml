@@ -1,3 +1,4 @@
+# scrapes statistics of BBB servers
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -11,7 +12,7 @@ spec:
     any: false
     matchNames:
       - monitoring
-  endpoints:  
+  endpoints:
   - basicAuth:
       password:
         name: bbb-basic-auth
@@ -23,6 +24,6 @@ spec:
     interval: 10s
     honorLabels: true
     port: metrics
-    scheme: https 
+    scheme: https
     tlsConfig:
       insecureSkipVerify: true

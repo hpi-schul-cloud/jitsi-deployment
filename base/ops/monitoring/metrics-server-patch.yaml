@@ -11,5 +11,6 @@ spec:
         args:
           - --cert-dir=/tmp
           - --secure-port=4443
+          # see https://github.com/kubernetes-sigs/metrics-server/blob/v0.3.6/README.md#flags
           - --kubelet-insecure-tls
           - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname

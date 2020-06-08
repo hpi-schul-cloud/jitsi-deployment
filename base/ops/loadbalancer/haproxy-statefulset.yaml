@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s-app: haproxy
 spec:
-  replicas: 2
+  replicas: 2 # use two replicas for high availability
   serviceName: haproxy
   selector:
     matchLabels:
@@ -17,13 +17,14 @@ spec:
         k8s-app: haproxy
     spec:
       affinity:
+        # HAProxy pods should run in different availability zones
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
               - key: k8s-app
                 operator: In
-                values: 
+                values:
                 - haproxy
             topologyKey: "topology.kubernetes.io/zone"
       volumes:
@@ -36,8 +37,9 @@ spec:
       containers:
       - name: haproxy
         image: haproxy:2.1
-        # Enable peering between the HAProxy-pods. Look up ip adress of other HAProxy instance and 
-        # export it. Those variables are then used in haproxy.cfg defined in ./haproxy-configmap.yaml.
+        # enable peering between HAProxy-pods
+        # look up ip address of other HAProxy instance and export it
+        # those variables are then used in haproxy.cfg defined in ./haproxy-configmap.yaml
         command: ["bash", "-c"]
         args:
           - >-
@@ -62,4 +64,3 @@ spec:
           - mountPath: /usr/local/etc/haproxy/haproxy.cfg
             name: haproxy-config
             subPath: haproxy.cfg
-        

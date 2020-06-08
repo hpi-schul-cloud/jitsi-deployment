@@ -1,4 +1,4 @@
-# Service for peering of HAProxies. 
+# service for peering of HAProxies (necessary to address haproxy-1 alone)
 apiVersion: v1
 kind: Service
 metadata:
