@@ -14,7 +14,7 @@ spec:
         k8s-app: jvb
         shard: "0"
     spec:
-      # Avoid that Pods of different shards share zone:
+      # avoid that pods of different shards share zone
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -22,7 +22,7 @@ spec:
               matchExpressions:
               - key: shard
                 operator: In
-                values: 
+                values:
                 - "1"
             topologyKey: "topology.kubernetes.io/zone"
       containers:

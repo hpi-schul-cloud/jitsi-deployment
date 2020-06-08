@@ -1,4 +1,4 @@
-# Defines the IPs of BBB, that should be scraped by Prometheus.
+# defines the IPs of BBB that should be scraped by Prometheus
 kind: Endpoints
 apiVersion: v1
 metadata:

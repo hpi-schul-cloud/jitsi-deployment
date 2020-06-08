@@ -6,7 +6,6 @@ resources:
   - shard-0/
   - shard-1/
 
-# CommonLabels not only add labels
-# but also add those to the selectors of the services involved.
+# CommonLabels not only adds labels but also adds them to the selectors of the services involved
 commonLabels:
   stage: dev

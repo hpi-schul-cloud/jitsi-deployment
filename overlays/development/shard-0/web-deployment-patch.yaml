@@ -6,9 +6,9 @@ metadata:
     k8s-app: web
   name: web
 spec:
-  # Avoid that Pods of different shards share zone:
   template:
     spec:
+      # avoid that pods of different shards share zone
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -16,7 +16,7 @@ spec:
               matchExpressions:
               - key: shard
                 operator: In
-                values: 
+                values:
                 - "1"
             topologyKey: "topology.kubernetes.io/zone"
       containers:

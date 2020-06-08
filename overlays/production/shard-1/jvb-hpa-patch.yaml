@@ -5,5 +5,5 @@ metadata:
   name: jvb-hpa
 spec:
   scaleTargetRef:
-    name: shard-1-jvb
+    name: shard-1-jvb # needs to be manually set
 
