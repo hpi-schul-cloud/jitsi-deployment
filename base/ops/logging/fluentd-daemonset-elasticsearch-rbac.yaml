@@ -1,4 +1,4 @@
-# Source: https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/79f63a80a67c388d9a5e601e2525ab052546866c/fluentd-daemonset-elasticsearch-rbac.yaml
+# Source: v1 https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/79f63a80a67c388d9a5e601e2525ab052546866c/fluentd-daemonset-elasticsearch-rbac.yaml
 
 ---
 apiVersion: v1

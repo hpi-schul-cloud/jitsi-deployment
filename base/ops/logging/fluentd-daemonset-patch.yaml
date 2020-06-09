@@ -17,13 +17,21 @@ spec:
               value: "https"
             - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
               value: "false" # not necessary within cluster
-            - name: FLUENT_ELASTICSEARCH_USER
-              value: "elastic"
-            # delete fluentd password and get new one from secret
+            # delete fluentd user
+            - $patch: delete
+              name: FLUENT_ELASTICSEARCH_USER
+            # delete fluentd password
             - $patch: delete
               name: FLUENT_ELASTICSEARCH_PASSWORD
-            - name: FLUENT_ELASTICSEARCH_PASSWORD
+            # this secret is of form username:password and will be split by the startup script
+            - name: FLUENT_ELASTICSEARCH_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: elasticsearch-es-elastic-user
-                  key: elastic
+                  name: elasticsearch-user-fluentd
+                  key: users
+          command: ["bash", "-c"]
+          args:
+            - >-
+              export FLUENT_ELASTICSEARCH_USER=${FLUENT_ELASTICSEARCH_USER_PASSWORD%%:*};
+              export FLUENT_ELASTICSEARCH_PASSWORD=${FLUENT_ELASTICSEARCH_USER_PASSWORD##*:};
+              exec tini -- /fluentd/entrypoint.sh
