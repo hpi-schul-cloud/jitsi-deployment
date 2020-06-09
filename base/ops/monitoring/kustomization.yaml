@@ -13,6 +13,7 @@ resources:
 - prosody-pod-monitor.yaml
 - bbb-service.yaml
 - bbb-service-monitor.yaml
+- haproxy-pod-monitor.yaml
 
 patchesStrategicMerge:
 - metrics-server-patch.yaml
