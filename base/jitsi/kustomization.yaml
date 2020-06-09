@@ -4,6 +4,11 @@ kind: Kustomization
 resources:
 - jitsi-namespace.yaml
 - web-service.yaml
+- jitsi-secret.yaml
+- prosody-configmap.yaml
+- web-configmap.yaml
+- jvb-entrypoint-configmap.yaml
+- jvb-shutdown-configmap.yaml
 
 commonLabels:
   scope: jitsi

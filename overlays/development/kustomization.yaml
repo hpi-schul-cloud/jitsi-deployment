@@ -5,7 +5,3 @@ resources:
   - ops/
   - shard-0/
   - shard-1/
-
-# CommonLabels not only adds labels but also adds them to the selectors of the services involved
-commonLabels:
-  stage: dev
