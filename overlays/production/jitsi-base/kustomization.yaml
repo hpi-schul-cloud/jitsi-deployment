@@ -1,0 +1,6 @@
+bases:
+  - ../../../base/jitsi-shard
+
+patchesStrategicMerge:
+  - jvb-statefulset-patch.yaml
+  - jvb-hpa-patch.yaml

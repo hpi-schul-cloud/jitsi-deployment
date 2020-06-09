@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: haproxy
+  namespace: jitsi
+  labels:
+    k8s-app: haproxy
+spec:
+  replicas: 2 # use two replicas for high availability
+  serviceName: haproxy
+  selector:
+    matchLabels:
+      k8s-app: haproxy
+  template:
+    metadata:
+      labels:
+        k8s-app: haproxy
+    spec:
+      affinity:
+        # HAProxy pods should run in different availability zones
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values:
+                - haproxy
+            topologyKey: "topology.kubernetes.io/zone"
+      volumes:
+        - name: haproxy-config
+          configMap:
+            name: haproxy-config
+            items:
+              - key: haproxy.cfg
+                path: haproxy.cfg
+      containers:
+      - name: haproxy
+        image: haproxy:2.1
+        # enable peering between HAProxy-pods
+        # look up ip address of other HAProxy instance and export it
+        # those variables are then used in haproxy.cfg defined in ./haproxy-configmap.yaml
+        command: ["bash", "-c"]
+        args:
+          - >-
+            apt-get update && apt-get install -y dnsutils;
+            [[ $HOSTNAME = 'haproxy-1' ]] &&
+            export OTHER_HOSTNAME=haproxy-0 OTHER_IP=$(nslookup haproxy-0 | awk 'NR==5 {print $2}') ||
+            export OTHER_HOSTNAME=haproxy-1 OTHER_IP=$(nslookup haproxy-1 | awk 'NR==5 {print $2}');
+            exec /docker-entrypoint.sh haproxy -f /usr/local/etc/haproxy/haproxy.cfg
+        env:
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        ports:
+        - name: http
+          containerPort: 80
+        - name: metrics
+          containerPort: 9090
+        - name: peering
+          containerPort: 1024
+        volumeMounts:
+          - mountPath: /usr/local/etc/haproxy/haproxy.cfg
+            name: haproxy-config
+            subPath: haproxy.cfg

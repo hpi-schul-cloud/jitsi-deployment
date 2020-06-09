@@ -1,11 +1,11 @@
-bases: 
-- ../../base
+bases:
+  - ../../base/jitsi
+
 resources:
-  - certificate.yaml
-  - jvb-hpa.yaml
-patchesStrategicMerge:
-  - jvb-statefulset-patch.yaml
-  - jitsi-ingress-patch.yaml
-  - grafana-deployment-patch.yaml
-  - grafana-ingress-patch.yaml
-  - prometheus-prometheus-patch.yaml
+  - ops/
+  - shard-0/
+  - shard-1/
+
+# CommonLabels not only adds labels but also adds them to the selectors of the services involved
+commonLabels:
+  stage: dev

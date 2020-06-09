@@ -1,0 +1,13 @@
+# service for peering of HAProxies (necessary to address haproxy-1 alone)
+apiVersion: v1
+kind: Service
+metadata:
+  name: haproxy-1
+  namespace: jitsi
+spec:
+  selector:
+    statefulset.kubernetes.io/pod-name: haproxy-1
+  ports:
+    - name: "peering"
+      port: 1024
+  type: ClusterIP

@@ -1,0 +1,16 @@
+bases:
+  - ../jitsi-base
+
+patchesStrategicMerge:
+  - jvb-hpa-patch.yaml
+  - jvb-statefulset-patch.yaml
+  - jicofo-deployment-patch.yaml
+  - web-deployment-patch.yaml
+  - prosody-deployment-patch.yaml
+
+namespace: jitsi
+
+namePrefix: shard-0-
+
+commonLabels:
+  shard: "0"

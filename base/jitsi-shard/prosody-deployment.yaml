@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: jitsi
+  labels:
+    k8s-app: prosody
+  name: prosody
+spec:
+  replicas: 1 # one prosody instance per shard
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      k8s-app: prosody
+      shard: "0"
+  template:
+    metadata:
+      labels:
+        k8s-app: prosody
+        shard: "0"
+    spec:
+      volumes:
+        - name: prosody
+          configMap:
+            name: prosody
+            items:
+              - key: mod_prometheus.lua
+                path: mod_prometheus.lua
+              - key: mod_measure_stanza_counts.lua
+                path: mod_measure_stanza_counts.lua
+              - key: mod_measure_client_presence.lua
+                path: mod_measure_client_presence.lua
+      containers:
+        - name: prosody
+          resources:
+            limits:
+              memory: 300Mi
+              cpu: 300m
+            requests:
+              memory: 300Mi
+              cpu: 300m
+          image: jitsi/prosody:stable-4548-1
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 5280
+          readinessProbe:
+            ## the command that is called obeys standard exit codes
+            exec:
+              command:
+                - prosodyctl
+                - --config
+                - /config/prosody.cfg.lua
+                - status
+          volumeMounts:
+          # add-ons that allow exporting of metrics to prometheus (mod_prometheus.lua)
+          # or enrich the available stats (mod_measure_stanza_counts.lua,
+          # mod_measure_client_presence.lua)
+          - name: prosody
+            mountPath: /prosody-plugins-custom/mod_prometheus.lua
+            subPath: mod_prometheus.lua
+          - name: prosody
+            mountPath: /usr/lib/prosody/modules/mod_measure_stanza_counts.lua
+            subPath: mod_measure_stanza_counts.lua
+          - name: prosody
+            mountPath: /usr/lib/prosody/modules/mod_measure_client_presence.lua
+            subPath: mod_measure_client_presence.lua
+          env:
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_MUC_DOMAIN
+              value: muc.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: JICOFO_COMPONENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_COMPONENT_SECRET
+            - name: JVB_AUTH_USER
+              value: jvb
+            - name: JVB_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JVB_AUTH_PASSWORD
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JICOFO_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_AUTH_PASSWORD
+            - name: TZ
+              value: Europe/Berlin
+            - name: JVB_TCP_HARVESTER_DISABLED
+              value: "true"
+            # activate add-ons that enrich the available stats of prosody
+            - name: GLOBAL_MODULES
+              value: prometheus,measure_stanza_counts,measure_client_presence
+            # config to allow exporting metrics in prometheus format by prometheus add-on
+            - name: GLOBAL_CONFIG
+              value: statistics = "internal";\nstatistics_interval = 15;

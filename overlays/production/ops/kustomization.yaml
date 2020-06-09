@@ -1,0 +1,14 @@
+bases:
+  - ../../../base/ops
+
+resources:
+  - bbb-endpoints.yaml
+  - certificate.yaml
+  - elasticsearch.yaml
+  - grafana-tls-secret.yaml
+
+patchesStrategicMerge:
+  - grafana-deployment-patch.yaml
+  - grafana-ingress-patch.yaml
+  - prometheus-prometheus-patch.yaml
+  - haproxy-ingress-patch.yaml

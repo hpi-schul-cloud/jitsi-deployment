@@ -1,0 +1,13 @@
+# this service is the entrypoint for the ingress
+apiVersion: v1
+kind: Service
+metadata:
+  name: haproxy
+  namespace: jitsi
+spec:
+  selector:
+    k8s-app: haproxy
+  ports:
+    - name: "http"
+      port: 80
+  type: ClusterIP

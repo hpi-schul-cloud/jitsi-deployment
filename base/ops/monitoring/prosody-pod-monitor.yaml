@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: prosody-pod-monitor
+  namespace: jitsi
+spec:
+  selector:
+    matchLabels:
+      k8s-app: prosody
+  namespaceSelector:
+    any: false
+    matchNames:
+      - jitsi
+  podMetricsEndpoints:
+    - port: metrics

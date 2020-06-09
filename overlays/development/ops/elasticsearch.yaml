@@ -1,0 +1,35 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+  namespace: logging
+spec:
+  version: 7.7.0
+  auth:
+    fileRealm:
+    - secretName: my-filerealm-secret
+  nodeSets:
+    - name: all-in-one
+      count: 2
+      config:
+        node.master: true
+        node.data: true
+        node.ingest: true
+      podTemplate:
+        spec:
+          initContainers:
+            # see https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-virtual-memory.html#k8s-virtual-memory
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 5Gi
+            storageClassName: ionos-enterprise-hdd

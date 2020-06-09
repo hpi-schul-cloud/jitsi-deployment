@@ -1,0 +1,44 @@
+# see https://github.com/GoogleCloudPlatform/metacontroller/tree/master/examples/service-per-pod
+
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: DecoratorController
+metadata:
+  name: service-per-pod
+  namespace: jitsi
+spec:
+  resources:
+  - apiVersion: apps/v1
+    resource: statefulsets
+    annotationSelector:
+      matchExpressions:
+      - {key: service-per-pod-label, operator: Exists}
+  attachments:
+  - apiVersion: v1
+    resource: services
+  hooks:
+    sync:
+      webhook:
+        url: http://service-per-pod.metacontroller/sync-service-per-pod
+    finalize:
+      webhook:
+        url: http://service-per-pod.metacontroller/finalize-service-per-pod
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: DecoratorController
+metadata:
+  name: pod-name-label
+  namespace: jitsi
+spec:
+  resources:
+  - apiVersion: v1
+    resource: pods
+    labelSelector:
+      matchExpressions:
+      - {key: pod-name, operator: DoesNotExist}
+    annotationSelector:
+      matchExpressions:
+      - {key: pod-name-label, operator: Exists}
+  hooks:
+    sync:
+      webhook:
+        url: http://service-per-pod.metacontroller/sync-pod-name-label

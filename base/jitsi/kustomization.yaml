@@ -3,12 +3,7 @@ kind: Kustomization
 
 resources:
 - jitsi-namespace.yaml
-- jitsi-secret.yaml
-- web-deployment.yaml
-- jicofo-deployment.yaml
-- prosody-deployment.yaml
-- web-configmap.yaml
-- prosody-service.yaml
 - web-service.yaml
-- jitsi-ingress.yaml
-- jvb/
+
+commonLabels:
+  scope: jitsi

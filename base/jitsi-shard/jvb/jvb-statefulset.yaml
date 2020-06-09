@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: jitsi
+  labels:
+    k8s-app: jvb
+  name: jvb
+  # needed for metacontroller to create/delete service per pod
+  annotations:
+    service-per-pod-label: "statefulset.kubernetes.io/pod-name"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: jvb
+  serviceName: jvb
+  # relax ordering guarantees because not needed (any JVB pod can be stopped or started at any time)
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        k8s-app: jvb
+    spec:
+      volumes:
+        - name: jvb-entrypoint
+          configMap:
+            name: jvb-entrypoint
+            defaultMode: 0744 # make executable
+        - name: jvb-shutdown
+          configMap:
+            name: jvb-shutdown
+            defaultMode: 0744 # make executable
+      # in case there is a long running conference on a JVB that should be shut down, give it time to finish
+      terminationGracePeriodSeconds: 2147483647
+      containers:
+        - name: prometheus-exporter
+          # sidecar container that exports stats for prometheus
+          # values are scraped by ../ops/monitoring/jvb-pod-monitor.yaml
+          image: systemli/prometheus-jitsi-meet-exporter:1.1.1
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 9888
+          args:
+            - "-videobridge-url"
+            - "http://localhost:8080/colibri/stats"
+        - name: jvb
+          image: jitsi/jvb:stable-4548-1
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: ["bash", "/shutdown/graceful_shutdown.sh", "-t 3"]
+          command:
+            - /entrypoint/entrypoint.sh
+          args:
+            - "/init"
+          readinessProbe:
+            httpGet:
+              path: /about/health
+              port: 8080
+            initialDelaySeconds: 10
+          volumeMounts:
+            - name: jvb-entrypoint
+              mountPath: /entrypoint
+            - name: jvb-shutdown
+              mountPath: /shutdown
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: XMPP_SERVER
+              value: prosody
+            - name: DOCKER_HOST_ADDRESS
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: JVB_STUN_SERVERS
+              value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JVB_TCP_HARVESTER_DISABLED
+              value: "true"
+            - name: JVB_ENABLE_APIS
+              value: colibri,rest
+            - name: JVB_AUTH_USER
+              value: jvb
+            - name: JVB_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JVB_AUTH_PASSWORD
+            - name: JICOFO_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_AUTH_PASSWORD
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+            - name: TZ
+              value: Europe/Berlin

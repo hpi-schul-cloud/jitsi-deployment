@@ -1,0 +1,33 @@
+# defines the IPs of BBB that should be scraped by Prometheus
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: bbb
+  namespace: monitoring
+  labels:
+    k8s-app: bbb-metrics
+subsets:
+  - addresses:
+      - ip: 81.173.113.21
+      - ip: 185.48.118.239
+      - ip: 185.48.118.241
+      - ip: 185.132.47.147
+      - ip: 217.160.211.64
+      - ip: 217.160.211.65
+      - ip: 217.160.211.66
+      - ip: 217.160.211.67
+      - ip: 217.160.211.68
+      - ip: 217.160.211.69
+      - ip: 217.160.211.70
+      - ip: 217.160.211.71
+      - ip: 217.160.211.72
+      - ip: 217.160.211.73
+      - ip: 217.160.211.74
+      - ip: 217.160.211.75
+      - ip: 217.160.211.76
+      - ip: 217.160.211.77
+      - ip: 217.160.211.78
+      - ip: 217.160.211.79
+    ports:
+      - name: metrics
+        port: 9100

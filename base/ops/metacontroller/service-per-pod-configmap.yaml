@@ -1,0 +1,66 @@
+# This ConfigMap defines the automation of creating NodePorts for every emerging JVB pod to expose it to the internet.
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: service-per-pod-hooks
+  namespace: metacontroller
+data:
+  finalize-service-per-pod.jsonnet: |
+    function(request) {
+      // If the StatefulSet is updated to no longer match our decorator selector,
+      // or if the StatefulSet is deleted, clean up any attachments we made.
+      attachments: [],
+      // Mark as finalized once we observe all Services are gone.
+      finalized: std.length(request.attachments['Service.v1']) == 0
+    }
+  sync-pod-name-label.jsonnet: |
+    function(request) {
+      local pod = request.object,
+      local labelKey = pod.metadata.annotations["pod-name-label"],
+
+      // Inject the Pod name as a label with the key requested in the annotation.
+      labels: {
+        [labelKey]: pod.metadata.name
+      }
+    }
+  sync-service-per-pod.jsonnet: |
+    function(request) {
+      local statefulset = request.object,
+      local labelKey = statefulset.metadata.annotations["service-per-pod-label"],
+
+      // the base port for is collected from the container setup
+      local basePort = std.parseInt([
+                         a for a in [
+                             c for c in statefulset.spec.template.spec.containers
+                             if c.name == 'jvb'
+                           ][0].args
+                           if std.startsWith(a, '3') && std.length(a) == 5][0]),
+
+      // create a service for each pod, with a selector on the given label key
+      attachments: [
+        {
+          apiVersion: "v1",
+          kind: "Service",
+          metadata: {
+            name: statefulset.metadata.name + "-" + index,
+            labels: {app: "service-per-pod"}
+          },
+          spec: {
+          selector: {
+              [labelKey]: statefulset.metadata.name + "-" + index
+            },
+            type: "NodePort",
+            externalTrafficPolicy: "Local",
+            ports: [
+              {
+                "port": basePort + index,
+                "protocol": "UDP",
+                "targetPort": basePort + index,
+                "nodePort": basePort + index
+              }
+            ]
+          }
+        }
+        for index in std.range(0, statefulset.spec.replicas - 1)
+      ]
+    }

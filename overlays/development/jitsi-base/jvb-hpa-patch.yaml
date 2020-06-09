@@ -1,0 +1,16 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: jitsi
+  name: jvb-hpa
+spec:
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: container_network_transmit_bytes_per_second
+        target:
+          type: AverageValue
+          averageValue: 400000

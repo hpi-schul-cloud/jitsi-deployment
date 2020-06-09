@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+  namespace: monitoring
+spec:
+  template:
+    spec:
+      volumes:
+        # use persistent storage (e.g. for storing users) instead of in-memory storage
+        - $patch: delete
+          name: grafana-storage
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-storage
+        - configMap:
+            name: grafana-dashboard-jitsi
+          name: grafana-dashboard-jitsi
+      containers:
+        - name: grafana
+          env:
+            # configure Grafana to serve from JITSI_DOMAIN/grafana
+            - name: GF_SERVER_ROOT_URL
+              value: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
+            - name: GF_SERVER_SERVE_FROM_SUB_PATH
+              value: "true"
+          # mount Jitsi Grafana dashboard, such that it is available after first start of pod
+          volumeMounts:
+            - name: grafana-dashboard-jitsi
+              mountPath: /grafana-dashboard-definitions/0/jitsi
+              readOnly: false
+          resources:
+            limits:
+              cpu: 600m
+              memory: 600Mi
+            requests:
+              cpu: 600m
+              memory: 600Mi
+      securityContext:
+        fsGroup: 427

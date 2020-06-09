@@ -1,0 +1,14 @@
+# used to scrape statistics of affiliated BigBlueButton project
+# BBB endpoints are defined in overlays
+kind: Service
+apiVersion: v1
+metadata:
+  name: bbb
+  namespace: monitoring
+  labels:
+    k8s-app: bbb-metrics
+spec:
+  clusterIP: None
+  ports:
+    - name: metrics
+      port: 9100

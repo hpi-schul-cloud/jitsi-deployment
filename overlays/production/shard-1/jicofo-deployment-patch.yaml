@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: jitsi
+  labels:
+    k8s-app: jicofo
+  name: jicofo
+spec:
+  template:
+    spec:
+      # avoid that pods of different shards share zone
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: shard
+                operator: In
+                values:
+                - "0"
+            topologyKey: "topology.kubernetes.io/zone"
+      containers:
+        - name: jicofo
+          env:
+            - name: XMPP_SERVER
+              value: shard-1-prosody

@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: haproxy-ingress
+  namespace: jitsi
+spec:
+  tls:
+  - hosts:
+    - jitsi.dev.messenger.schule
+    secretName: jitsi-messenger-schule-tls
+  rules:
+    - host: jitsi.dev.messenger.schule
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: haproxy
+              servicePort: 80

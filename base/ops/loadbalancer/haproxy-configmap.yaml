@@ -1,0 +1,70 @@
+# This ConfigMaps defines the configuration of HAProxy. It enables
+# 1. sticky tables using URL parameter room for load-balancing (backend jitsi-meet)
+# 2. DNS resolving of web containers for all shards (resolvers kube-dns)
+# 3. peering between the HAProxy instances using the environment variables exported at start of container
+#    (see command of haproxy pod) (peers mypeers)
+# 4. exporting of metrics usable by Prometheus and reachable stats frontend on port 9090 (frontend stats)
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: jitsi
+  name: haproxy-config
+data:
+  haproxy.cfg: |
+    global
+      # log to stdout
+      log stdout format raw local0 info
+      # enable stats socket for dynamic configuration and status retrieval
+      stats socket ipv4@127.0.0.1:9999 level admin
+      stats socket /var/run/hapee-lb.sock mode 666 level admin
+      stats timeout 2m
+
+    defaults
+      log               global
+      option            httplog
+      retries           3
+      maxconn           2000
+      timeout connect   5s
+      timeout client    50s
+      timeout server    50s
+
+    resolvers kube-dns
+      # kubernetes DNS is defined in resolv.conf
+      parse-resolv-conf
+      hold valid 10s
+
+    frontend http_in
+      bind *:80
+      mode http
+      option forwardfor
+      option http-keep-alive
+      default_backend jitsi-meet
+
+    # expose statistics in Prometheus format
+    frontend stats
+      mode http
+      bind *:9090
+      option http-use-htx
+      http-request use-service prometheus-exporter if { path /metrics }
+      stats enable
+      stats uri /stats
+      stats refresh 10s
+
+    peers mypeers
+      log stdout format raw local0 info
+      peer "${HOSTNAME}" "${MY_POD_IP}:1024"
+      peer "${OTHER_HOSTNAME}" "${OTHER_IP}:1024"
+
+    backend jitsi-meet
+      balance roundrobin
+      mode http
+      option forwardfor
+      http-reuse safe
+      http-request set-header Room %[urlp(room)]
+      acl room_found urlp(room) -m found
+      stick-table type string len 128 size 2k expire 1d peers mypeers
+      stick on hdr(Room) if room_found
+      # _http._tcp.web.jitsi.svc.cluster.local:80 is a SRV DNS record
+      # A records don't work here because their order might change between calls and would result in different
+      # shard IDs for each peered HAproxy
+      server-template shard 0-5 _http._tcp.web.jitsi.svc.cluster.local:80 check resolvers kube-dns init-addr none

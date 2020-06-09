@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: jitsi
+  labels:
+    k8s-app: jicofo
+  name: jicofo
+spec:
+  replicas: 1 # one jicofo instance per shard
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      k8s-app: jicofo
+  template:
+    metadata:
+      labels:
+        k8s-app: jicofo
+    spec:
+      containers:
+        - name: jicofo
+          resources:
+            limits:
+              memory: 400Mi
+              cpu: 400m
+            requests:
+              memory: 400Mi
+              cpu: 400m
+          image: jitsi/jicofo:stable-4548-1
+          imagePullPolicy: Always
+          readinessProbe:
+            # caution: this readinessProbe tries to create a new conference and hence also fails if
+            # dependencies (jvb, prosody) are not available
+            httpGet:
+              path: /about/health
+              port: 8888
+          env:
+            - name: XMPP_SERVER
+              value: prosody
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: JICOFO_COMPONENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_COMPONENT_SECRET
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JICOFO_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_AUTH_PASSWORD
+            - name: TZ
+              value: Europe/Berlin
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+            - name: JICOFO_ENABLE_HEALTH_CHECKS
+              value: "true"

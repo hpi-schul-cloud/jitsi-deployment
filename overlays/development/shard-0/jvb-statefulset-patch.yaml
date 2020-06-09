@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: jitsi
+  name: jvb
+spec:
+  selector:
+    matchLabels:
+      k8s-app: jvb
+      shard: "0"
+  template:
+    metadata:
+      labels:
+        k8s-app: jvb
+        shard: "0"
+    spec:
+      # avoid that pods of different shards share zone
+      nodeSelector:
+        topology.kubernetes.io/zone: ZONE_1
+      containers:
+        - name: jvb
+          env:
+            - name: XMPP_SERVER
+              value: shard-0-prosody
+          args:
+            - "30300"
+            - "/init"
