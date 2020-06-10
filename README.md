@@ -75,3 +75,15 @@ access set up with public key authentication.
 
 After starting a number of load test servers, the load test can be started by using the [`loadtest/run_loadtest.sh`](loadtest/run_loadtest.sh)
 script (locally). Results can be found in [`docs/loadtests/loadtestresults.md`](docs/loadtests/loadtestresults.md).
+
+## Kibana Access
+
+Kibana is not accessible from the Internet and must be forwarded to your local machine via `kubectl` by executing
+```bash
+$ kubectl port-forward -n logging svc/kibana-kb-http 5601:5601
+```
+After that you will be able to access Kibana via [https://localhost:5601/](https://localhost:5601/).
+The default login password (user `elastic`) can be received with
+```bash
+$ kubectl get secret -n logging elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
+```
