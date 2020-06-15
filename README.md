@@ -39,7 +39,8 @@ It makes use of [kustomize](https://github.com/kubernetes-sigs/kustomize) to cus
 ## Requirements
 
 - [kubectl/v1.17.2+](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [kustomize/v3.5.4+](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv3.5.4)
+- [kustomize/v3.5.4](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv3.5.4)
+  _WARNING_: newer versions of kustomize currently don't work due to changes regarding remote sources
 
 ## Install
 
