@@ -39,7 +39,8 @@ It makes use of [kustomize](https://github.com/kubernetes-sigs/kustomize) to cus
 ## Requirements
 
 - [kubectl/v1.17.2+](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [kustomize/v3.5.4+](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv3.5.4)
+- [kustomize/v3.5.4](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv3.5.4)
+  _WARNING_: newer versions of kustomize currently don't work due to changes regarding remote sources
 
 ## Install
 
@@ -75,3 +76,37 @@ access set up with public key authentication.
 
 After starting a number of load test servers, the load test can be started by using the [`loadtest/run_loadtest.sh`](loadtest/run_loadtest.sh)
 script (locally). Results can be found in [`docs/loadtests/loadtestresults.md`](docs/loadtests/loadtestresults.md).
+
+## Kubernetes Dashboard Access
+
+To access the installed [Kubernetes Dashboard](https://github.com/kubernetes/dashboard) execute
+```bash
+$ kubectl proxy
+```
+and then go to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`.
+
+The login token can be received by executing
+```bash
+kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+```
+
+## Kibana Access
+
+Kibana is not accessible from the Internet and must be forwarded to your local machine via `kubectl` by executing
+```bash
+$ kubectl port-forward -n logging svc/kibana-kb-http 5601:5601
+```
+After that you will be able to access Kibana via [https://localhost:5601/](https://localhost:5601/).
+The default login password (user `elastic`) can be received with
+```bash
+$ kubectl get secret -n logging elasticsearch-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo
+```
+
+The same procedure can be used to access Prometheus or Alertmanager.
+
+## Relationship With Other Projects
+
+The monitoring stack that is set up by this project is currently also used by an [affiliated project](https://github.com/schul-cloud/bbb-deployment)
+for [Big Blue Button](https://bigbluebutton.org/). Therefore, some of the files here contain configurations to monitor
+that setup. To exclude them delete all files starting with `bbb-` and remove the file names from the respective
+`kustomization.yaml` files.

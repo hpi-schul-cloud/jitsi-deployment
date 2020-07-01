@@ -10,6 +10,8 @@ metadata:
     service-per-pod-label: "statefulset.kubernetes.io/pod-name"
 spec:
   replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       k8s-app: jvb

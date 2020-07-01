@@ -6,7 +6,7 @@ resources:
 - eck-crd.yaml
 - kibana.yaml
 - fluentd-daemonset-elasticsearch-rbac.yaml
-- my-realm-secret.yaml
+- es-realm-secret.yaml
 - secret-fluentd-user.yaml
 
 patchesStrategicMerge:

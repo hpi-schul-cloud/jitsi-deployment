@@ -5,6 +5,9 @@ metadata:
   namespace: logging
 spec:
   version: 7.7.0
+  auth:
+    fileRealm:
+    - secretName: es-filerealm-secret
   nodeSets:
     - name: master
       count: 3

@@ -6,6 +6,7 @@ resources:
   - certificate.yaml
   - elasticsearch.yaml
   - grafana-tls-secret.yaml
+  - bbb-basic-auth-secret.yaml
 
 patchesStrategicMerge:
   - grafana-deployment-patch.yaml
