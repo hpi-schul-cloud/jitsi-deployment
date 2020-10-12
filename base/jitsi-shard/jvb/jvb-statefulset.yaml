@@ -85,7 +85,10 @@ spec:
             - name: XMPP_INTERNAL_MUC_DOMAIN
               value: internal-muc.meet.jitsi
             - name: JVB_STUN_SERVERS
-              value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JVB_STUN_SERVERS
             - name: JICOFO_AUTH_USER
               value: focus
             - name: JVB_TCP_HARVESTER_DISABLED

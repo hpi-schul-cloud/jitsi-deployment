@@ -33,6 +33,8 @@ spec:
                 path: mod_measure_stanza_counts.lua
               - key: mod_measure_client_presence.lua
                 path: mod_measure_client_presence.lua
+              - key: jitsi-meet.cfg.lua
+                path: jitsi-meet.cfg.lua
       containers:
         - name: prosody
           resources:
@@ -68,6 +70,9 @@ spec:
           - name: prosody
             mountPath: /usr/lib/prosody/modules/mod_measure_client_presence.lua
             subPath: mod_measure_client_presence.lua
+          - name: prosody
+            mountPath: /defaults/conf.d/jitsi-meet.cfg.lua
+            subPath: jitsi-meet.cfg.lua
           env:
             - name: XMPP_DOMAIN
               value: meet.jitsi
@@ -77,6 +82,8 @@ spec:
               value: muc.meet.jitsi
             - name: XMPP_INTERNAL_MUC_DOMAIN
               value: internal-muc.meet.jitsi
+            - name: XMPP_MUC_MODULES
+              value: muc_meeting_id,muc_domain_mapper
             - name: JICOFO_COMPONENT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -106,3 +113,29 @@ spec:
             # config to allow exporting metrics in prometheus format by prometheus add-on
             - name: GLOBAL_CONFIG
               value: statistics = "internal";\nstatistics_interval = 15;
+            - name: TURNCREDENTIALS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: TURNCREDENTIALS_SECRET
+            - name: TURN_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: TURN_HOST
+            - name: STUN_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: STUN_PORT
+            - name: TURN_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: TURN_PORT
+            - name: TURNS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: TURNS_PORT
+            

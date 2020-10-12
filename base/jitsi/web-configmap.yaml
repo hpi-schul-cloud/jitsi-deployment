@@ -292,7 +292,7 @@ data:
 
         hosts: {
             // XMPP domain.
-            domain: 'jitsi-meet.example.com',
+            domain: 'meet.jitsi',
 
             // When using authentication, domain for guest users.
             // anonymousdomain: 'guest.example.com',
@@ -310,11 +310,11 @@ data:
             // focus: 'focus.jitsi-meet.example.com',
 
             // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
-            muc: 'conference.jitsi-meet.example.com'
+            muc: 'muc.meet.jitsi'
         },
 
         // BOSH URL. FIXME: use XEP-0156 to discover it.
-        bosh: '//jitsi-meet.example.com/http-bind',
+        bosh: '//meet.jitsi/http-bind',
 
         // Websocket URL
         // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
@@ -517,7 +517,7 @@ data:
         // minParticipants: 2,
 
         // Use XEP-0215 to fetch STUN and TURN servers.
-        // useStunTurn: true,
+        useStunTurn: true,
 
         // Enable IPv6 support.
         // useIPv6: true,
@@ -620,7 +620,7 @@ data:
             enabled: true,
 
             // Use XEP-0215 to fetch STUN and TURN servers.
-            // useStunTurn: true,
+            useStunTurn: true,
 
             // The STUN servers that will be used in the peer to peer connections
             stunServers: [
