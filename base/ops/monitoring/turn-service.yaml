@@ -3,14 +3,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: bbb
+  name: turn
   namespace: monitoring
   labels:
-    k8s-app: bbb-metrics
+    k8s-app: turn-metrics
 spec:
   clusterIP: None
   ports:
-    - name: ne-metrics
+    - name: metrics
       port: 9100
-    - name: bbb-metrics
-      port: 9688

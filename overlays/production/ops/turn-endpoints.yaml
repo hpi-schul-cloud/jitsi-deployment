@@ -1,0 +1,13 @@
+# defines the IPs of TURN servers that should be scraped by Prometheus
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: turn
+  namespace: monitoring
+  labels:
+    k8s-app: turn-metrics
+subsets:
+  - addresses: []
+    ports:
+      - name: metrics
+        port: 9100

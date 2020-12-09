@@ -1,0 +1,15 @@
+# defines the IPs of BBB that should be scraped by Prometheus
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: turn
+  namespace: monitoring
+  labels:
+    k8s-app: turn-metrics
+subsets:
+  - addresses:
+      - ip: 213.244.192.110
+      - ip: 217.160.200.166
+    ports:
+      - name: metrics
+        port: 9100

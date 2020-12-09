@@ -8,12 +8,16 @@ resources:
 - grafana-ingress.yaml
 - grafana-pvc.yaml
 - jitsi-dashboard-configmap.yaml
+- bbb-dashboards-configmap.yaml
 - prometheus-roleBindingSpecificNamespaces.yaml
 - prometheus-roleSpecificNamespaces.yaml
 - jvb-pod-monitor.yaml
 - prosody-pod-monitor.yaml
 - bbb-service.yaml
 - bbb-service-monitor.yaml
+- bbb-exporter-service-monitor.yaml
+- turn-service.yaml
+- turn-service-monitor.yaml
 - haproxy-pod-monitor.yaml
 
 patchesStrategicMerge:

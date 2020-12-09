@@ -18,6 +18,9 @@ spec:
         - configMap:
             name: grafana-dashboard-jitsi
           name: grafana-dashboard-jitsi
+        - configMap:
+            name: bbb-dashboards
+          name: bbb-dashboards
       containers:
         - name: grafana
           env:
@@ -30,6 +33,9 @@ spec:
           volumeMounts:
             - name: grafana-dashboard-jitsi
               mountPath: /grafana-dashboard-definitions/0/jitsi
+              readOnly: false
+            - name: bbb-dashboards
+              mountPath: /grafana-dashboard-definitions/0/bbb
               readOnly: false
           resources:
             limits:

@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: bbb-service-monitor
+  name: bbb-exporter-service-monitor
   namespace: monitoring
 spec:
   selector:
@@ -23,7 +23,7 @@ spec:
     path: /metrics
     interval: 10s
     honorLabels: true
-    port: ne-metrics
-    scheme: https
+    port: bbb-metrics
+    scheme: http
     tlsConfig:
       insecureSkipVerify: true

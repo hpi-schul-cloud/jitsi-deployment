@@ -42,5 +42,7 @@ subsets:
       - ip: 185.48.118.200
       - ip: 85.184.249.58
     ports:
-      - name: metrics
+      - name: ne-metrics
         port: 9100
+      - name: bbb-metrics
+        port: 9688

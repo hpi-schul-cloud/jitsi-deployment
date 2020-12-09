@@ -12,4 +12,4 @@ spec:
         - name: grafana
           env:
             - name: GF_SERVER_DOMAIN
-              value: "jitsi.dev.messenger.schule"
+              value: "jitsi.staging.messenger.schule"

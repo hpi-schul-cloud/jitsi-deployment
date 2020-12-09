@@ -3,6 +3,7 @@ bases:
 
 resources:
   - bbb-endpoints.yaml
+  - turn-endpoints.yaml
   - certificate.yaml
   - elasticsearch.yaml
   - grafana-tls-secret.yaml
