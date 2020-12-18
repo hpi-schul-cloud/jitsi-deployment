@@ -1,0 +1,39 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: jitsi
+  name: jigasi-entrypoint
+data:
+  entrypoint.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    # both jq and curl are needed for shutdown hook
+    apt-dpkg-wrap apt-get update && apt-dpkg-wrap apt-get -y install curl jq iproute2 dnsutils
+
+    echo "Processing Custom Configs added by Entrypoint"
+    echo "net.java.sip.communicator.impl.neomedia.audioSystem.audiosilence.captureDevice_list=[\"AudioSilenceCaptureDevice:noTransferData\"]" >> /defaults/sip-communicator.properties
+    echo "net.java.sip.communicator.impl.protocol.sip.acc1.USE_TRANSLATOR_IN_CONFERENCE=true" >> /defaults/sip-communicator.properties
+    echo "org.jitsi.jigasi.xmpp.acc.USE_TRANSLATOR_IN_CONFERENCE=true" >> /defaults/sip-communicator.properties
+    echo "# VoxEngine" >> /defaults/sip-communicator.properties
+    echo "# Use standard X- header" >> /defaults/sip-communicator.properties
+    echo "net.java.sip.communicator.impl.protocol.sip.acc1.JITSI_MEET_ROOM_HEADER_NAME=X-Room-Name" >> /defaults/sip-communicator.properties
+    echo "# don’t overload Jigasi with focus changes" >> /defaults/sip-communicator.properties
+    echo "net.java.sip.communicator.impl.protocol.sip.SKIP_REINVITE_ON_FOCUS_CHANGE_PROP=true" >> /defaults/sip-communicator.properties
+    echo "# can be enabled to disable audio mixing and use translator, jigasi will act as jvb, just forward every ssrc stream it receives." >> /defaults/sip-communicator.properties
+    echo "net.java.sip.communicator.impl.protocol.sip.acc1.USE_TRANSLATOR_IN_CONFERENCE=true" >> /defaults/sip-communicator.properties
+    echo "org.jitsi.jigasi.xmpp.acc.USE_TRANSLATOR_IN_CONFERENCE=true" >> /defaults/sip-communicator.properties
+    echo "# allow a conference to start muted" >> /defaults/sip-communicator.properties
+    echo "org.jitsi.jigasi.ENABLE_SIP_STARTMUTED=true" >> /defaults/sip-communicator.properties
+    sed -i 's/AMR-WB\/16000=750/AMR-WB\/16000=0/g' /defaults/sip-communicator.properties
+    sed -i 's/G722\/8000=700/G722\/8000=0/g' /defaults/sip-communicator.properties
+    sed -i 's/PCMA\/8000=600/PCMA\/8000=0/g' /defaults/sip-communicator.properties
+    sed -i 's/PCMU\/8000=650/PCMU\/8000=0/g' /defaults/sip-communicator.properties
+    sed -i 's/iLBC\/8000=10/iLBC\/8000=0/g' /defaults/sip-communicator.properties
+
+    echo "Making log dir and giving permissions"
+    mkdir -p /config/log
+    chmod 777 -R /config/log
+
+    exec "$@"
+

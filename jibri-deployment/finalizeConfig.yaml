@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata: 
+  name: finalize-sh
+  namespace: jitsi
+data:
+  finalize.sh: |-
+    #!/bin/bash
+    RECORDINGS_DIR=$1
+    #ANY LOGIC YOU WANT AFTER RECORDING    
+    exit 0

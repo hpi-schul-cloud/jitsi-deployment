@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jibri-one
+  labels:
+    component: jibri
+  namespace: jitsi
+spec:
+  serviceName: jibir-one
+  replicas:
+  selector:
+    matchLabels:
+      component: jibri
+  template:
+    metadata:
+      labels:
+        component: jibri
+    spec:
+      hostAliases:
+        - ip: '1.1.1.1'
+          hostnames:
+            - example.com
+      securityContext:
+        fsGroup: 63
+      containers:
+        - name: jibri
+          image: docker.io/jitsi/jibri
+          resources:
+            limits:
+              memory: '4G'
+              cpu: '2'
+            requests:
+              memory: '2G'
+              cpu: '1'
+          envFrom:
+            - configMapRef:
+                name: jibri-env
+          volumeMounts:
+            - name: dns-resolver
+              mountPath: '/etc/resolv.conf'
+              subPath: resolv.conf
+              readOnly: false
+            - name: jibri-recorder
+              mountPath: /config/recordings
+            - name: jibri-logs
+              mountPath: /config/logs
+            - name: snd
+              mountPath: /dev/snd
+            - name: shm
+              mountPath: /dev/shm
+            - name: finalize-sh
+              mountPath: /config/finalize.sh
+              subPath: finalize.sh
+            - name: asoundrc
+              mountPath: /home/jibri/.asoundrc
+              subPath: .asoundrc
+            - name: home-dir
+              mountPath: /home/jibri
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - NET_BIND_SERVICE
+                - SYS_ADMIN
+      volumes:
+        - name: dns-resolver
+          configMap:
+            name: dns-resolver
+        - name: jibri-recorder
+          emptyDir: {}
+        - name: jibri-logs
+          emptyDir: {}
+        - name: snd
+          hostPath:
+            path: /dev/snd
+        - name: finalize-sh
+          configMap:
+            name: finalize-sh
+            defaultMode: 0777
+        - name: home-dir
+          emptyDir: {}
+        - name: asoundrc
+          configMap:
+            name: assound-1
+            defaultMode: 0644
+        - name: shm
+          hostPath:
+            path: /dev/shm
+

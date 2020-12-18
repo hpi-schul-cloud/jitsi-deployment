@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jibri-env
+  namespace: jitsi
+data:
+  XMPP_AUTH_DOMAIN: auth.<YOUR_BASE_DOMAIN>
+  XMPP_INTERNAL_MUC_DOMAIN: internal-muc.<YOUR_BASE_DOMAIN>
+  XMPP_RECORDER_DOMAIN: recorder.<YOUR_BASE_DOMAIN>
+  XMPP_SERVER: shard-0-prosody.jitsi.svc.cluster.local
+  XMPP_DOMAIN: <YOUR_BASE_DOMAIN>
+  JIBRI_XMPP_USER: jibri
+  JIBRI_XMPP_PASSWORD: jibriauthpass 
+  JIBRI_BREWERY_MUC: JibriBrewery
+  JIBRI_RECORDER_USER: recorder
+  JIBRI_RECORDER_PASSWORD: jibrirecorderpass
+  JIBRI_RECORDING_DIR: /config
+  JIBRI_FINALIZE_RECORDING_SCRIPT_PATH: /config/finalize.sh
+  JIBRI_STRIP_DOMAIN_JID: muc
+  JIBRI_LOGS_DIR: /config/logs
+  DISPLAY: :0
+ 
