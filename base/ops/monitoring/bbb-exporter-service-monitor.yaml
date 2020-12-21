@@ -1,4 +1,4 @@
-# scrapes statistics of BBB servers
+# scrapes BBB-exporter statistics
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
