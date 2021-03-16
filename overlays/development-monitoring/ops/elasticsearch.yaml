@@ -8,6 +8,7 @@ spec:
   auth:
     fileRealm:
     - secretName: es-filerealm-secret
+  podDisruptionBudget: {}
   nodeSets:
     - name: all-in-one
       count: 2

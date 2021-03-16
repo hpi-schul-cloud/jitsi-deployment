@@ -8,8 +8,16 @@ metadata:
     k8s-app: turn-metrics
 subsets:
   - addresses:
+  # sc-staging-bbb-turn-1
+      - ip: 213.244.192.173
       - ip: 213.244.192.110
+      - ip: 217.160.200.52
+      - ip: 217.160.200.21
+  # sc-staging-jitsi-turn-1
+      - ip: 217.160.200.167
       - ip: 217.160.200.166
+      - ip: 217.160.200.169
+      - ip: 217.160.200.168
     ports:
       - name: metrics
         port: 9100

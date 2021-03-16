@@ -21,7 +21,7 @@ spec:
         name: bbb-basic-auth
         key: username
     path: /metrics
-    interval: 10s
+    interval: 30s
     honorLabels: true
     port: metrics
     scheme: http
