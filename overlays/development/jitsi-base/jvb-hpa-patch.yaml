@@ -13,4 +13,4 @@ spec:
           name: container_network_transmit_bytes_per_second
         target:
           type: AverageValue
-          averageValue: 400000
+          averageValue: 400k
