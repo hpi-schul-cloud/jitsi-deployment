@@ -30,7 +30,7 @@ spec:
               memory: 400Mi
               cpu: 400m
           image: jitsi/jicofo:stable-4548-1
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           readinessProbe:
             # caution: this readinessProbe tries to create a new conference and hence also fails if
             # dependencies (jvb, prosody) are not available

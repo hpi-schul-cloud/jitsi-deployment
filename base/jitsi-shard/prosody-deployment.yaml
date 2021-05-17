@@ -45,7 +45,7 @@ spec:
               memory: 300Mi
               cpu: 300m
           image: jitsi/prosody:stable-4548-1
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - name: metrics
               containerPort: 5280

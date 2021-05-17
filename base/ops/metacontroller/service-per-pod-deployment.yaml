@@ -16,7 +16,7 @@ spec:
       containers:
       - name: hooks
         image: metacontroller/jsonnetd:0.1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         workingDir: /hooks
         volumeMounts:
         - name: hooks
