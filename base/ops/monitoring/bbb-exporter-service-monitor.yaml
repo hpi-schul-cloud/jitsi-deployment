@@ -24,6 +24,6 @@ spec:
     interval: 30s
     honorLabels: true
     port: bbb-metrics
-    scheme: http
+    scheme: https
     tlsConfig:
       insecureSkipVerify: true
