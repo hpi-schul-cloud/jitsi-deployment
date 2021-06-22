@@ -1,0 +1,305 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: jitsi
+  labels:
+    k8s-app: jigasi
+  name: jigasi
+spec:
+  replicas: 1 # one jigasi instance per shard
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      k8s-app: jigasi
+  serviceName: jigasi
+  template:
+    metadata:
+      labels:
+        k8s-app: jigasi
+    spec:
+      volumes:
+        - name: jigasi-entrypoint
+          configMap:
+            name: jigasi-entrypoint
+            defaultMode: 0744 # make executable
+      containers:
+        - name: jigasi
+          resources:
+            limits:
+              memory: 400Mi
+              cpu: 400m
+            requests:
+              memory: 400Mi
+              cpu: 400m
+          image: jitsi/jigasi:stable-5142-3
+          imagePullPolicy: Always
+          command:
+            - /entrypoint/entrypoint.sh
+          args:
+            - "/init"
+          volumeMounts:
+            - name: jigasi-entrypoint
+              mountPath: /entrypoint
+          env:
+            - name: XMPP_SERVER
+              value: shard-0-prosody.jitsi.svc.cluster.local
+            - name: XMPP_DOMAIN
+              value: <YOUR_BASE_DOMAIN>
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.<YOUR_BASE_DOMAIN>
+            - name: XMPP_MUC_DOMAIN
+              value: muc.<YOUR_BASE_DOMAIN>
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.<YOUR_BASE_DOMAIN>
+            - name: XMPP_RECORDER_DOMAIN
+              value: recorder.<YOUR_BASE_DOMAIN>
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+            # JWT ENV 
+            - name: ENABLE_AUTH
+              value: "1"
+            - name: ENABLE_GUESTS
+              value: "1"
+            - name: AUTH_TYPE
+              value: "jwt"
+            - name: JWT_APP_ID
+              value: "my_jitsi_app_id"
+            - name: JWT_APP_SECRET
+              value: "secret123456"
+            - name: JWT_ALLOW_EMPTY
+              value: "true"
+            - name: JIGASI_SIP_URI
+              value: "<VOX_IMPLANT_USER>@<VOX_IMPLANT_URL>"
+            - name: JIGASI_SIP_PASSWORD
+              value: "<VOX_IMPLANT_PASSWORD>"
+            - name: JIGASI_SECRET
+              value: YW1vczhrdW9pOQ==
+            - name: JIGASI_OPTS
+              value: ""
+            - name: JIGASI_HOSTNAME
+              value: "<YOUR_BASE_DOMAIN>"
+            - name: JIGASI_HOST
+              value: shard-0-prosody.jitsi.svc.cluster.local
+            - name: JIGASI_XMPP_PASSWORD
+              value: jigasipass
+            - name: JIGASI_XMPP_USER
+              value: jigasi
+            - name: JIGASI_BREWERY_MUC
+              value: JigasiBrewery
+            - name: JIGASI_SIP_SERVER
+              value: sip.k8s.liveu.io
+            - name: JIGASI_PORT_MIN
+              value: "30000"
+            - name: JIGASI_PORT_MAX
+              value: "30050"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jigasi
+spec:
+  type: NodePort
+  selector:
+    app: jigasi
+  ports:
+    - name: jigasi-1
+      port: 30001
+      targetPort: 30001
+      nodePort: 30001
+    - name: jigasi-2
+      port: 30002
+      targetPort: 30002
+      nodePort: 30002
+    - name: jigasi-3
+      port: 30003
+      targetPort: 30003
+      nodePort: 30003
+    - name: jigasi-4
+      port: 30004
+      targetPort: 30004
+      nodePort: 30004
+    - name: jigasi-5
+      port: 30005
+      targetPort: 30005
+      nodePort: 30005
+    - name: jigasi-6
+      port: 30006
+      targetPort: 30006
+      nodePort: 30006
+    - name: jigasi-7
+      port: 30007
+      targetPort: 30007
+      nodePort: 30007
+    - name: jigasi-8
+      port: 30008
+      targetPort: 30008
+      nodePort: 30008
+    - name: jigasi-9
+      port: 30009
+      targetPort: 30009
+      nodePort: 30009
+    - name: jigasi-10
+      port: 30010
+      targetPort: 30010
+      nodePort: 30010
+    - name: jigasi-11
+      port: 30011
+      targetPort: 30011
+      nodePort: 30011
+    - name: jigasi-12
+      port: 30012
+      targetPort: 30012
+      nodePort: 30012
+    - name: jigasi-13
+      port: 30013
+      targetPort: 30013
+      nodePort: 30013
+    - name: jigasi-14
+      port: 30014
+      targetPort: 30014
+      nodePort: 30014
+    - name: jigasi-15
+      port: 30015
+      targetPort: 30015
+      nodePort: 30015
+    - name: jigasi-16
+      port: 30016
+      targetPort: 30016
+      nodePort: 30016
+    - name: jigasi-17
+      port: 30017
+      targetPort: 30017
+      nodePort: 30017
+    - name: jigasi-18
+      port: 30018
+      targetPort: 30018
+      nodePort: 30018
+    - name: jigasi-19
+      port: 30019
+      targetPort: 30019
+      nodePort: 30019
+    - name: jigasi-20
+      port: 30020
+      targetPort: 30020
+      nodePort: 30020
+    - name: jigasi-21
+      port: 30021
+      targetPort: 30021
+      nodePort: 30021
+    - name: jigasi-22
+      port: 30022
+      targetPort: 30022
+      nodePort: 30022
+    - name: jigasi-23
+      port: 30023
+      targetPort: 30023
+      nodePort: 30023
+    - name: jigasi-24
+      port: 30024
+      targetPort: 30024
+      nodePort: 30024
+    - name: jigasi-25
+      port: 30025
+      targetPort: 30025
+      nodePort: 30025
+    - name: jigasi-26
+      port: 30026
+      targetPort: 30026
+      nodePort: 30026
+    - name: jigasi-27
+      port: 30027
+      targetPort: 30027
+      nodePort: 30027
+    - name: jigasi-28
+      port: 30028
+      targetPort: 30028
+      nodePort: 30028
+    - name: jigasi-29
+      port: 30029
+      targetPort: 30029
+      nodePort: 30029
+    - name: jigasi-30
+      port: 30030
+      targetPort: 30030
+      nodePort: 30030
+    - name: jigasi-31
+      port: 30031
+      targetPort: 30031
+      nodePort: 30031
+    - name: jigasi-32
+      port: 30032
+      targetPort: 30032
+      nodePort: 30032
+    - name: jigasi-33
+      port: 30033
+      targetPort: 30033
+      nodePort: 30033
+    - name: jigasi-34
+      port: 30034
+      targetPort: 30034
+      nodePort: 30034
+    - name: jigasi-35
+      port: 30035
+      targetPort: 30035
+      nodePort: 30035
+    - name: jigasi-36
+      port: 30036
+      targetPort: 30036
+      nodePort: 30036
+    - name: jigasi-37
+      port: 30037
+      targetPort: 30037
+      nodePort: 30037
+    - name: jigasi-38
+      port: 30038
+      targetPort: 30038
+      nodePort: 30038
+    - name: jigasi-39
+      port: 30039
+      targetPort: 30039
+      nodePort: 30039
+    - name: jigasi-40
+      port: 30040
+      targetPort: 30040
+      nodePort: 30040
+    - name: jigasi-41
+      port: 30041
+      targetPort: 30041
+      nodePort: 30041
+    - name: jigasi-42
+      port: 30042
+      targetPort: 30042
+      nodePort: 30042
+    - name: jigasi-43
+      port: 30043
+      targetPort: 30043
+      nodePort: 30043
+    - name: jigasi-44
+      port: 30044
+      targetPort: 30044
+      nodePort: 30044
+    - name: jigasi-45
+      port: 30045
+      targetPort: 30045
+      nodePort: 30045
+    - name: jigasi-46
+      port: 30046
+      targetPort: 30046
+      nodePort: 30046
+    - name: jigasi-47
+      port: 30047
+      targetPort: 30047
+      nodePort: 30047
+    - name: jigasi-48
+      port: 30048
+      targetPort: 30048
+      nodePort: 30048
+    - name: jigasi-49
+      port: 30049
+      targetPort: 30049
+      nodePort: 30049
+    - name: jigasi-50
+      port: 30050
+      targetPort: 30050
+      nodePort: 30050
