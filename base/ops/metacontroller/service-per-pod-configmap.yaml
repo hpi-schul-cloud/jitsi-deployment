@@ -13,16 +13,6 @@ data:
       // Mark as finalized once we observe all Services are gone.
       finalized: std.length(request.attachments['Service.v1']) == 0
     }
-  sync-pod-name-label.jsonnet: |
-    function(request) {
-      local pod = request.object,
-      local labelKey = pod.metadata.annotations["pod-name-label"],
-
-      // Inject the Pod name as a label with the key requested in the annotation.
-      labels: {
-        [labelKey]: pod.metadata.name
-      }
-    }
   sync-service-per-pod.jsonnet: |
     function(request) {
       local statefulset = request.object,
@@ -46,7 +36,7 @@ data:
             labels: {app: "service-per-pod"}
           },
           spec: {
-          selector: {
+            selector: {
               [labelKey]: statefulset.metadata.name + "-" + index
             },
             type: "NodePort",
