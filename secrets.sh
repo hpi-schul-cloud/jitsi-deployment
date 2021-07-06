@@ -1,3 +1,5 @@
+#!/bin/bash
+
 secretsfile="$1"
 instance="$2"
 
@@ -6,7 +8,7 @@ get-secret () {
 }
 
 encrypt-secret () {
-    get-secret "$1" | base64
+    get-secret "$1" | base64 -w 0
 }
 
 sed -i 's/JICOFO_COMPONENT_SECRET: .*/JICOFO_COMPONENT_SECRET: '$(encrypt-secret "JICOFO_COMPONENT_SECRET")'/g' base/jitsi/jitsi-secret.yaml
