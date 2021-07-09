@@ -43,7 +43,7 @@ spec:
               memory: 300Mi
               cpu: 400m
           image: jitsi/web:stable-4548-1
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           readinessProbe:
             httpGet:
               port: 80
